@@ -1,4 +1,4 @@
-# README.md para PeakVault
+# PeakVault
 
 ⚠️ **DUAL LICENSE**  
 🎁 **Grátis (MIT)**: Uso pessoal, estudo, hobby  
