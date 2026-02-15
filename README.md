@@ -19,12 +19,26 @@ PeakVault é um projeto pessoal desenvolvido em Python para gerenciamento genér
 
 ## Funcionalidades Principais
 - **CRUD Completo**: Adicionar itens (adaptando-se às keys do JSON carregado), editar dados manualmente, excluir por nome ou primeira coluna de texto (string), e salvar a lista.
-- **Carregamento Genérico**: Abre qualquer lista JSON plana; campos de adição se ajustam automaticamente ao número de keys (ex.: nome, nota, status; ou mais keys em outras listas).
-- **Funcionalidades Específicas para Lista de Animes**: Botões para marcar como "dropado" ou "planejado" ou nos status ao adicionar itens.
+- **Carregamento Genérico**: Abre qualquer lista JSON plana; campos de adição se ajustam automaticamente ao número de keys (ex.: nome, nota, status; ou mais keys se existirem em outras listas).
+  
+  ![JSON Carregado](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/380f477067d856c7aba776ec55479df80bce5631/images/Screenshot%202026-02-14%20214613.png)
+  
 - **Agrupamento Dinâmico**: Agrupa dados por qualquer key disponível (ex.: por nome, nota ou status), adaptando-se às keys do JSON.
+
+  ![JSON Agrupado](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/380f477067d856c7aba776ec55479df80bce5631/images/Screenshot%202026-02-14%20214627.png)
+
 - **Visualização de Gráficos**: Gera gráficos Matplotlib baseados no agrupamento selecionado (sempre agrupe primeiro, depois visualize).
+
+![Gráficos](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/refs/heads/main/images/Screenshot%202026-02-14%20220021.png)
+
 - **Pesquisa**: Barra no topo esquerdo para buscar itens na lista carregada.
+
+![Pesquisa](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/refs/heads/main/images/Screenshot%202026-02-14%20220127.png)
+
 - **Status e Erros**: Barra inferior mostra última ação realizada, com tratamento de erros em todas as funções.
+
+![Status](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/refs/heads/main/images/Screenshot%202026-02-14%20220207.png)
+
 - **Geral**: Funciona para qualquer lista JSON plana, com interface intuitiva e feedback visual.
 
 ## Como Usar
