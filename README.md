@@ -1,8 +1,8 @@
 # PeakVault
 
 ⚠️ **DUAL LICENSE**  
-🎁 **Grátis (MIT)**: Uso pessoal, estudo, hobby  
-💰 **Paga (R$10/mês)**: Empresas, revenda, produção  
+🎁 **Grátis (MIT)**: Uso pessoal, estudo, hobby.  
+💰 **Paga (R$20/mês)**: Empresas, revenda, produção, suporte e atualizações contínuas.  
 📧 [y2kgif@gmail.com](mailto:y2kgif@gmail.com)
 
 Sistema para análise de arquivos JSON.
