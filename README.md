@@ -5,8 +5,9 @@
 💰 **Paga (R$10/mês)**: Empresas, revenda, produção  
 📧 [y2kgif@gmail.com](mailto:y2kgif@gmail.com)
 
-
 Sistema para análise de arquivos JSON.
+
+![Tela inicial](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/refs/heads/main/images/Screenshot%202026-02-14%20214557.png)
 
 PeakVault é um projeto pessoal desenvolvido em Python para gerenciamento genérico de listas JSON planas. Ele oferece uma interface gráfica moderna e intuitiva, ideal para organizar coleções como animes, filmes ou séries com suporte a CRUD completo e visualizações de dados.
 
