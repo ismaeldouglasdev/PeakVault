@@ -1,60 +1,88 @@
 # PeakVault
 
-⚠️ **DUAL LICENSE**  
-🎁 **Grátis (MIT)**: Uso pessoal, estudo, hobby.  
-💰 **Paga (R$20/mês)**: Empresas, revenda, produção, suporte e atualizações contínuas.  
-📧 [y2kgif@gmail.com](mailto:y2kgif@gmail.com)
+<p>
+  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/CustomTkinter-1F6FEB?style=flat-square&logo=python&logoColor=white" alt="CustomTkinter">
+  <img src="https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white" alt="Pandas">
+  <img src="https://img.shields.io/badge/Matplotlib-11557C?style=flat-square&logo=python&logoColor=white" alt="Matplotlib">
+  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT">
+</p>
 
-Sistema para análise de arquivos JSON.
+Sistema de análise e processamento de arquivos JSON com interface gráfica moderna. CRUD dinâmico, agrupamento de dados e visualização gráfica — adaptável a qualquer lista JSON plana.
 
 ![Tela inicial](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/refs/heads/main/images/Screenshot%202026-02-14%20214557.png)
 
-PeakVault é um projeto pessoal desenvolvido em Python para gerenciamento genérico de listas JSON planas. Ele oferece uma interface gráfica moderna e intuitiva, ideal para organizar coleções como animes, filmes ou séries com suporte a CRUD completo e visualizações de dados.
+---
 
-## Tecnologias Utilizadas
-- **Python**: Linguagem principal.
-- **CustomTkinter**: GUI em tons de azul escuro e design moderno.
-- **Pandas**: Análise e processamento de dados em listas JSON.
-- **Matplotlib**: Geração de gráficos baseados em agrupamentos.
+## Visão Geral
 
-## Funcionalidades Principais
-- **CRUD Completo**: Adicionar itens (adaptando-se às keys do JSON carregado), editar dados manualmente, excluir por nome ou primeira coluna de texto (string), e salvar a lista.
-- **Carregamento Genérico**: Abre qualquer lista JSON plana; campos de adição se ajustam automaticamente ao número de keys (ex.: nome, nota, status; ou mais keys se existirem em outras listas).
-  
-  ![JSON Carregado](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/380f477067d856c7aba776ec55479df80bce5631/images/Screenshot%202026-02-14%20214613.png)
-  
-- **Agrupamento Dinâmico**: Agrupa dados por qualquer key disponível (ex.: por nome, nota ou status), adaptando-se às keys do JSON.
+PeakVault é uma ferramenta de produtividade pessoal para gerenciamento genérico de listas JSON planas. Oferece interface gráfica intuitiva para organizar coleções como animes, filmes, jogos ou qualquer conjunto de dados estruturado, com suporte a CRUD completo, agrupamento dinâmico e geração de gráficos.
 
-  ![JSON Agrupado](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/380f477067d856c7aba776ec55479df80bce5631/images/Screenshot%202026-02-14%20214627.png)
+## Funcionalidades
 
-- **Visualização de Gráficos**: Gera gráficos Matplotlib baseados no agrupamento selecionado (sempre agrupe primeiro, depois visualize).
+- **CRUD completo** — Adicionar, editar, excluir e salvar itens com adaptação automática às keys do JSON carregado
+- **Carregamento genérico** — Abre qualquer lista JSON plana; os campos de adição se ajustam automaticamente às keys do arquivo
+- **Agrupamento dinâmico** — Agrupa dados por qualquer key disponível para análise segmentada
+- **Visualização gráfica** — Geração de gráficos Matplotlib com base nos agrupamentos selecionados
+- **Pesquisa** — Barra de busca para filtrar itens na lista carregada
+- **Feedback visual** — Barra de status com última ação realizada e tratamento de erros em todas as funções
 
-![Gráficos](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/refs/heads/main/images/Screenshot%202026-02-14%20220021.png)
+## Tecnologias
 
-- **Pesquisa**: Barra no topo esquerdo para buscar itens na lista carregada.
-
-![Pesquisa](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/refs/heads/main/images/Screenshot%202026-02-14%20220127.png)
-
-- **Status e Erros**: Barra inferior mostra última ação realizada, com tratamento de erros em todas as funções.
-
-![Status](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/refs/heads/main/images/Screenshot%202026-02-14%20220207.png)
-
-- **Geral**: Funciona para qualquer lista JSON plana, com interface intuitiva e feedback visual.
+| Tecnologia | Finalidade |
+|---|---|
+| Python | Linguagem principal |
+| CustomTkinter | Interface gráfica moderna em tons de azul escuro |
+| Pandas | Análise e processamento dos dados JSON |
+| Matplotlib | Geração de gráficos |
 
 ## Como Usar
-1. Execute o script principal via CMD (ex.: `python interface.py`).
-2. Na interface: carregue uma lista JSON via botão "Carregar lista".
-3. Use botões à esquerda para CRUD, agrupar ou visualizar.
-4. A interface adapta campos automaticamente às keys do arquivo.
 
-## Instalação
-```bash
-pip install customtkinter pandas matplotlib
+1. Instale as dependências:
+   ```bash
+   pip install customtkinter pandas matplotlib
+   ```
+2. Execute o script principal:
+   ```bash
+   python interface.py
+   ```
+3. Na interface, carregue uma lista JSON via botão "Carregar lista"
+4. Utilize os botões à esquerda para CRUD, agrupar ou visualizar gráficos
+
+> Compatível com Windows 10 e 11.
+
+## Estrutura do Projeto
+
 ```
-Clone o repositório e rode o script principal. Compatível com Windows 10 e 11.
+PeakVault/
+├── interface.py                              # Interface gráfica (CustomTkinter)
+├── logica.py                                 # Lógica de processamento dos dados
+├── ranking_animes(sample_json_para_testar).json  # JSON de exemplo para testes
+├── images/                                   # Screenshots do projeto
+├── LICENSE                                   # MIT
+└── README.md
+```
 
-## Limitações e Futuro
-- Projetado para uso próprio, focado em listas planas (sem objetos aninhados).
-- Expansível para mais formatos de dados ou temas.
+## Exemplos
 
-Criado por @ismaeldouglasdev, como ferramenta de produtividade pessoal para listas, tracking de animes, e métricas em jogos. Contribuições via issues!
+### JSON carregado e pronto para edição
+![JSON Carregado](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/380f477067d856c7aba776ec55479df80bce5631/images/Screenshot%202026-02-14%20214613.png)
+
+### Dados agrupados por key
+![JSON Agrupado](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/380f477067d856c7aba776ec55479df80bce5631/images/Screenshot%202026-02-14%20214627.png)
+
+### Gráficos gerados a partir dos agrupamentos
+![Gráficos](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/refs/heads/main/images/Screenshot%202026-02-14%20220021.png)
+
+## Limitações
+
+- Projetado para listas JSON planas (sem objetos aninhados)
+- Desenvolvido inicialmente para uso pessoal em tracking de animes, filmes e métricas de jogos
+
+## Licença
+
+Distribuído sob licença **MIT**. Consulte o arquivo [LICENSE](LICENSE) para mais informações.
+
+---
+
+Desenvolvido por [Ismael Douglas](https://github.com/ismaeldouglasdev).
