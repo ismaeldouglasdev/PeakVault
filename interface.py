@@ -1172,6 +1172,8 @@ class ItemTrackerGUI:
 
     def salvar_items(self):
         """Salva os dados atuais no JSON."""
+        if self.current_file:
+            logica.set_ranking_file(self.current_file)
         df = logica.carregar_dataframe()
         if df.empty:
             self.atualizar_status("📭 Nada para salvar.", cor="#ffa726")
@@ -1186,6 +1188,8 @@ class ItemTrackerGUI:
         """Exporta os dados atuais para CSV."""
         from tkinter import filedialog
 
+        if self.current_file:
+            logica.set_ranking_file(self.current_file)
         df = logica.carregar_dataframe()
         if df.empty:
             self.atualizar_status("📭 Nada para exportar.", cor="#ffa726")
