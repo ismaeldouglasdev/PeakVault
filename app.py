@@ -98,20 +98,16 @@ st.markdown("""
     .stMarkdown, .stCaption, p, li { color: var(--text); }
 
     /* Cards */
-    div[data-testid="metric-container"] {
-        background: var(--bg-elevated);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 8px 12px;
+    /* Stats cards custom (substitui st.metric) */
+    .stat-card {
+        background: var(--bg-elevated); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 8px 12px 4px;
+        text-align: center;
     }
-    div[data-testid="metric-container"] label {
-        color: var(--text-muted) !important; font-size: 12px !important;
-    }
-    div[data-testid="metric-container"] label div[data-testid="stMarkdownContainer"] p {
-        font-size: 28px !important; line-height: 1.3;
-    }
-    div[data-testid="metric-container"] div[data-testid="metric-value"] {
-        color: var(--text) !important; font-size: 20px !important; font-weight: 700 !important;
+    .stat-card .stat-emoji { font-size: 32px; line-height: 1.2; display: block; }
+    .stat-card .stat-number {
+        font-size: 22px; font-weight: 700; display: block;
+        color: var(--text); margin-top: -2px;
     }
 
     /* Buttons */
@@ -360,7 +356,7 @@ if not has_data:
 df_current = st.session_state.df
 stats = obter_stats(df_current)
 
-# ── STATS ROW ──
+# ── STATS ROW (HTML custom — st.metric é instável com emojis) ──
 show_s = is_anime_like(df_current)
 cols = st.columns(6)
 cfg = [("📊","total","#fff"),("⭐","media","#03a9f4"),("✅","completo","#4caf50"),
@@ -369,7 +365,7 @@ for col,(icon,key,c) in zip(cols,cfg):
     val = stats.get(key,0) if key!="media" else (stats.get("media","—") or "—")
     if key in ("completo","assistindo","planejado","dropado") and not show_s:
         col.empty(); continue
-    col.metric(icon, val)
+    col.markdown(f'<div class="stat-card"><span class="stat-emoji">{icon}</span><span class="stat-number" style="color:{c};">{val}</span></div>', unsafe_allow_html=True)
 
 # ── GROUP + CHART ──
 df_filtered = get_filtered_df()
