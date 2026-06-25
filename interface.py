@@ -989,12 +989,26 @@ class ItemTrackerGUI:
         self._atualizar_stats_cards()
         self.atualizar_status(f"✅ {len(registros)} item(ns) listados!", cor="#4caf50")
 
+    # ── helpers ──────────────────────────────────────────────────────
+
+    def centralizar(self, janela):
+        """Centraliza uma janela Toplevel em relação a tela."""
+        janela.update_idletasks()
+        lag = janela.winfo_width()
+        alt = janela.winfo_height()
+        scr_lag = janela.winfo_screenwidth()
+        scr_alt = janela.winfo_screenheight()
+        x = (scr_lag - lag) // 2
+        y = (scr_alt - alt) // 2
+        janela.geometry(f"+{x}+{y}")
+
     # ── CRUD ──────────────────────────────────────────────────────
 
     def adicionar_item(self):
         janela = ctk.CTkToplevel(self.root)
         janela.title("➕ Novo Item")
         janela.geometry("450x500")
+        self.centralizar(janela)
         janela.configure(fg_color="#14141f")
         janela.transient(self.root)
         janela.grab_set()
@@ -1074,6 +1088,7 @@ class ItemTrackerGUI:
         top = ctk.CTkToplevel(self.root)
         top.title("📈 Estatísticas Detalhadas")
         top.geometry("600x500")
+        self.centralizar(top)
         top.configure(fg_color="#101018")
         top.transient(self.root)
 
@@ -1139,6 +1154,7 @@ class ItemTrackerGUI:
         top = ctk.CTkToplevel(self.root)
         top.title(f"📊 Gráfico de '{coluna}'")
         top.geometry("700x500")
+        self.centralizar(top)
         top.configure(fg_color="#101018")
         top.lift()
         top.focus_force()
@@ -1235,6 +1251,7 @@ class ItemTrackerGUI:
         janela = ctk.CTkToplevel(self.root)
         janela.title(f"🏷️ Tags: {valores.get('nome', valores.get(cols[0], ''))}")
         janela.geometry("400x350")
+        self.centralizar(janela)
         janela.configure(fg_color="#14141f")
         janela.transient(self.root)
         janela.grab_set()
@@ -1343,6 +1360,7 @@ class ItemTrackerGUI:
         janela = ctk.CTkToplevel(self.root)
         janela.title("❌ Excluir Item")
         janela.geometry("700x500")
+        self.centralizar(janela)
         janela.configure(fg_color="#14141f")
         janela.transient(self.root)
         janela.grab_set()
@@ -1441,6 +1459,7 @@ class ItemTrackerGUI:
         janela = ctk.CTkToplevel(self.root)
         janela.title("💔 Item Dropado")
         janela.geometry("450x350")
+        self.centralizar(janela)
         janela.configure(fg_color="#14141f")
         janela.transient(self.root)
         janela.grab_set()
@@ -1498,6 +1517,7 @@ class ItemTrackerGUI:
         janela = ctk.CTkToplevel(self.root)
         janela.title("⏳ Planejar Item")
         janela.geometry("450x350")
+        self.centralizar(janela)
         janela.configure(fg_color="#14141f")
         janela.transient(self.root)
         janela.grab_set()
