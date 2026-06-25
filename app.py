@@ -105,7 +105,10 @@ st.markdown("""
         padding: 8px 12px;
     }
     div[data-testid="metric-container"] label {
-        color: var(--text-muted) !important; font-size: 22px !important; line-height: 1.4;
+        color: var(--text-muted) !important; font-size: 12px !important;
+    }
+    div[data-testid="metric-container"] label div[data-testid="stMarkdownContainer"] p {
+        font-size: 28px !important; line-height: 1.3;
     }
     div[data-testid="metric-container"] div[data-testid="metric-value"] {
         color: var(--text) !important; font-size: 20px !important; font-weight: 700 !important;
