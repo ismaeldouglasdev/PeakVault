@@ -1032,6 +1032,9 @@ class ItemTrackerGUI:
             row += 1
 
         def salvar_novo():
+            # Garante que está operando no arquivo correto da aba ativa
+            if self.current_file:
+                logica.set_ranking_file(self.current_file)
             logica.push_undo()
             registro = {col: entry.get() for col, entry in entries.items()}
             df = logica.carregar_dataframe()
@@ -1301,7 +1304,8 @@ class ItemTrackerGUI:
                 logica.push_undo()
 
                 if "tags" not in cols:
-                    # add tags column at data level
+                    if self.current_file:
+                        logica.set_ranking_file(self.current_file)
                     df = logica.carregar_dataframe()
                     df["tags"] = ""
                     logica.salvar_lista(df.to_dict(orient="records"))
@@ -1409,6 +1413,8 @@ class ItemTrackerGUI:
                 valor = f"linha {idx+1}"
 
             if messagebox.askyesno("Confirmar?", f"Excluir '{valor}'?"):
+                if self.current_file:
+                    logica.set_ranking_file(self.current_file)
                 logica.push_undo()
                 df_drop = df.drop(index=linha_idx)
                 logica.salvar_lista(df_drop.to_dict(orient="records"))

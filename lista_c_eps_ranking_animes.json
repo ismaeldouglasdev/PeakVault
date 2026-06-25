@@ -1,0 +1,500 @@
+[
+  {
+    "nome": "Lord of the Mysteries",
+    "nota": 10.0,
+    "status": "completo",
+    "eps": 40.0
+  },
+  {
+    "nome": "My Instant Death Ability (Yogiri Takatou)",
+    "nota": 9.8,
+    "status": "completo",
+    "eps": 12.0
+  },
+  {
+    "nome": "Gurren Lagann",
+    "nota": 9.8,
+    "status": "completo",
+    "eps": 27.0
+  },
+  {
+    "nome": "Hells Paradise",
+    "nota": 9.7,
+    "status": "completo",
+    "eps": 13.0
+  },
+  {
+    "nome": "Steins;Gate",
+    "nota": 9.6,
+    "status": "completo",
+    "eps": 24.0
+  },
+  {
+    "nome": "Shangri-La Frontier",
+    "nota": 9.6,
+    "status": "completo",
+    "eps": 25.0
+  },
+  {
+    "nome": "The Most Notorious Talker (Noel Stollen)",
+    "nota": 9.6,
+    "status": "completo",
+    "eps": 12.0
+  },
+  {
+    "nome": "Boushoku no Berserk",
+    "nota": 9.6,
+    "status": "completo",
+    "eps": 12.0
+  },
+  {
+    "nome": "No Game No Life",
+    "nota": 9.5,
+    "status": "completo",
+    "eps": 12.0
+  },
+  {
+    "nome": "Re:Zero",
+    "nota": 9.5,
+    "status": "completo",
+    "eps": 50.0
+  },
+  {
+    "nome": "Solo Leveling",
+    "nota": 9.5,
+    "status": "completo",
+    "eps": 12.0
+  },
+  {
+    "nome": "Failure Frame: I Became the Strongest and Annihilated Everything with Low-Level Spells",
+    "nota": 9.4,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Tsukimichi",
+    "nota": 9.4,
+    "status": "completo",
+    "eps": 25.0
+  },
+  {
+    "nome": "Death March to the Parallel World Rhapsody",
+    "nota": 9.3,
+    "status": "completo",
+    "eps": 12.0
+  },
+  {
+    "nome": "Fuguushoku Kanteishi ga Jitsu wa Saikyou datta",
+    "nota": 9.3,
+    "status": "completo",
+    "eps": 12.0
+  },
+  {
+    "nome": "The Eminence in Shadow",
+    "nota": 9.2,
+    "status": "completo",
+    "eps": 20.0
+  },
+  {
+    "nome": "Kaiju No. 8",
+    "nota": 9.2,
+    "status": "completo",
+    "eps": 12.0
+  },
+  {
+    "nome": "Mugen Gacha [My Gift LVL 9999 Unlimited Gacha]",
+    "nota": 9.2,
+    "status": "completo",
+    "eps": 12.0
+  },
+  {
+    "nome": "Arifureta: From Commonplace to World's Strongest",
+    "nota": 9.2,
+    "status": "completo",
+    "eps": 25.0
+  },
+  {
+    "nome": "Lazarus",
+    "nota": 9.2,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Sakamoto Days",
+    "nota": 9.2,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Classroom of the Elite",
+    "nota": 9.1,
+    "status": "completo",
+    "eps": 38.0
+  },
+  {
+    "nome": "That Time I Got Reincarnated as a Slime",
+    "nota": 9.0,
+    "status": "completo",
+    "eps": 72.0
+  },
+  {
+    "nome": "To Be Hero X",
+    "nota": 9.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Mushoku Tensei",
+    "nota": 9.0,
+    "status": "completo",
+    "eps": 34.0
+  },
+  {
+    "nome": "KonoSuba",
+    "nota": 9.0,
+    "status": "completo",
+    "eps": 20.0
+  },
+  {
+    "nome": "The Misfits of Demon King Academy",
+    "nota": 9.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Fire Force",
+    "nota": 8.9,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Spirit Chronicles",
+    "nota": 8.8,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Cautious Hero: The Hero Is Overpowered but Overly Cautious",
+    "nota": 8.75,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Black Summoner",
+    "nota": 8.7,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Shinmai Ossan Boukensha",
+    "nota": 8.6,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Trapped in a Dating Sim",
+    "nota": 8.6,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Tomodachi Game",
+    "nota": 8.5,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Reincarnated as a Sword",
+    "nota": 8.5,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "The Wrong Way to Use Healing Magic",
+    "nota": 8.4,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "The Greatest Demon Lord Is Reborn as a Typical Nobody",
+    "nota": 8.3,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "I Got a Cheat Skill in Another World and Became Unrivaled",
+    "nota": 8.2,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Death Note",
+    "nota": 8.0,
+    "status": "completo",
+    "eps": 37.0
+  },
+  {
+    "nome": "Magic Maker",
+    "nota": 8.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "World's Finest Assassin",
+    "nota": 8.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Black Company",
+    "nota": 8.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Saga of Tanya the Evil",
+    "nota": 8.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Handyman Saitou in Another World",
+    "nota": 7.9,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "My Status as an Assassin Obviously Exceeds the Hero's",
+    "nota": 7.8,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Shield Hero",
+    "nota": 7.5,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Demon Slayer",
+    "nota": 7.5,
+    "status": "completo",
+    "eps": 61.0
+  },
+  {
+    "nome": "Akame ga Kill",
+    "nota": 7.5,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Boku no Hero Academia",
+    "nota": 7.5,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Possibly the Greatest Alchemist",
+    "nota": 7.5,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "The New Gate",
+    "nota": 7.3,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Mashle",
+    "nota": 7.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Demon Sword Master of Excalibur Academy",
+    "nota": 7.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Dandadan",
+    "nota": 7.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Parasyte",
+    "nota": 7.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "A Wild Last Boss Appeared!",
+    "nota": 7.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Apocalypse Bringer Mynoghra",
+    "nota": 7.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Demon Lord 2099",
+    "nota": 6.5,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Overlord",
+    "nota": 6.5,
+    "status": "completo",
+    "eps": 52.0
+  },
+  {
+    "nome": "The Hidden Dungeon Only I Can Enter",
+    "nota": 6.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Hametsu no Oukokuo (The Kingdoms of Ruin)",
+    "nota": 6.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Dr. Stone",
+    "nota": 6.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Skeleton Knight",
+    "nota": 6.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Faraway Paladin",
+    "nota": 6.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Demon Lord, Retry!",
+    "nota": 5.5,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Goblin Slayer",
+    "nota": 5.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Re:Monster",
+    "nota": 4.0,
+    "status": "completo",
+    "eps": "?"
+  },
+  {
+    "nome": "Wistoria: Wand and Sword",
+    "nota": 0,
+    "status": "planejado",
+    "eps": "?"
+  },
+  {
+    "nome": "Ishura",
+    "nota": 0,
+    "status": "planejado",
+    "eps": "?"
+  },
+  {
+    "nome": "The Legendary Hero is Dead!",
+    "nota": 0,
+    "status": "planejado",
+    "eps": "?"
+  },
+  {
+    "nome": "Hametsu no Oukoku",
+    "nota": 3.0,
+    "status": "dropado",
+    "eps": "?"
+  },
+  {
+    "nome": "The Banished Court Magician Aims to Become a Faker",
+    "nota": 0,
+    "status": "dropado",
+    "eps": "?"
+  },
+  {
+    "nome": "Hunter x Hunter",
+    "nota": 0,
+    "status": "dropado",
+    "eps": "?"
+  },
+  {
+    "nome": "Frieren: Beyond Journey's End",
+    "nota": 0,
+    "status": "dropado",
+    "eps": "?"
+  },
+  {
+    "nome": "Wind Breaker",
+    "nota": 0,
+    "status": "dropado",
+    "eps": "?"
+  },
+  {
+    "nome": "Dorohedoro",
+    "nota": 0,
+    "status": "dropado",
+    "eps": "?"
+  },
+  {
+    "nome": "The Apothecary Diaries",
+    "nota": 0,
+    "status": "dropado",
+    "eps": "?"
+  },
+  {
+    "nome": "Akuyaku Reijou Level 99: Watashi wa Ura-Boss desu ga Maou dewa Arimasen",
+    "nota": 0,
+    "status": "dropado",
+    "eps": "?"
+  },
+  {
+    "nome": "Jigokurako Temporada 2",
+    "nota": "8",
+    "status": "assistindo",
+    "eps": "?"
+  },
+  {
+    "nome": "Roll Over and Die",
+    "nota": 7.5,
+    "status": "assistindo",
+    "eps": "?"
+  },
+  {
+    "nome": "Hell Mode: Yarikomizuki no Gamer wa Hai Settei no Isekai de Musou suru",
+    "nota": "7",
+    "status": "assistindo",
+    "eps": "?"
+  },
+  {
+    "nome": "Noble Reincarnation: Born Blessed, So I'll Obtain Ultimate Power",
+    "nota": "8.1",
+    "status": "assistindo",
+    "eps": "?"
+  },
+  {
+    "nome": "Saikyou Onmyouji no Isekai Tenseiki",
+    "nota": "8.65",
+    "status": "completo",
+    "eps": 13.0
+  }
+]
