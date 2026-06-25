@@ -276,7 +276,7 @@ with st.sidebar:
 
         col_close, col_dl = st.columns(2)
         with col_close:
-            if st.button("✕ Fechar", type="secondary"):
+            if st.button("✕ Fechar", key="btn_close", type="secondary"):
                 for k in ["df","df_name","df_hash","undo_stack","undo_pos","group_field","show_chart"]:
                     st.session_state[k] = None if k in ("df","df_name","df_hash") else ([] if k=="undo_stack" else (False if k=="show_chart" else -1))
                 st.rerun()
@@ -292,11 +292,11 @@ with st.sidebar:
         st.markdown("##### Ações")
         c1,c2 = st.columns(2)
         with c1:
-            if st.button("➕ Novo"): st.session_state.show_add_dialog=True
-            if st.button("🏷️ Tags"): st.session_state.show_tags_dialog=True
+            if st.button("➕ Novo", key="btn_add"): st.session_state.show_add_dialog=True
+            if st.button("🏷️ Tags", key="btn_tags"): st.session_state.show_tags_dialog=True
         with c2:
-            if st.button("❌ Excluir"): st.session_state.show_delete_dialog=True
-            if st.button("📥 CSV"):
+            if st.button("❌ Excluir", key="btn_del"): st.session_state.show_delete_dialog=True
+            if st.button("📥 CSV", key="btn_csv"):
                 csv = st.session_state.df.to_csv(index=False, encoding="utf-8-sig")
                 st.download_button("📥 Download", csv,
                     file_name=(st.session_state.df_name or "dados").rsplit(".",1)[0]+".csv",
@@ -306,20 +306,20 @@ with st.sidebar:
             st.markdown("##### Status rápido")
             c1,c2 = st.columns(2)
             with c1:
-                if st.button("💔 Dropado"): st.session_state.show_add_dialog="dropado"
-                if st.button("↩️ Desfazer"):
+                if st.button("💔 Dropado", key="btn_drop"): st.session_state.show_add_dialog="dropado"
+                if st.button("↩️ Desfazer", key="btn_undo"):
                     if undo(): st.rerun()
             with c2:
-                if st.button("⏳ Planejar"): st.session_state.show_add_dialog="planejado"
-                if st.button("↪️ Refazer"):
+                if st.button("⏳ Planejar", key="btn_plan"): st.session_state.show_add_dialog="planejado"
+                if st.button("↪️ Refazer", key="btn_redo"):
                     if redo(): st.rerun()
         else:
             c1,c2 = st.columns(2)
             with c1:
-                if st.button("↩️ Desfazer"):
+                if st.button("↩️ Desfazer", key="btn_undo2"):
                     if undo(): st.rerun()
             with c2:
-                if st.button("↪️ Refazer"):
+                if st.button("↪️ Refazer", key="btn_redo2"):
                     if redo(): st.rerun()
 
     # GIF aleatório (nova imagem a cada interação)
@@ -380,7 +380,7 @@ with cg:
         st.session_state.group_field = sel if sel else None
 with cc:
     st.markdown("<br>",unsafe_allow_html=True)
-    if st.button("📊 Gráfico"):
+    if st.button("📊 Gráfico", key="btn_chart"):
         st.session_state.show_chart = not st.session_state.show_chart
         st.rerun()
 
@@ -446,7 +446,7 @@ if st.session_state.show_add_dialog:
         entries[col] = st.text_input(col, value=(col=="status" and preset) or "", key=f"add_{col}", placeholder=col)
     c1,c2 = st.columns(2)
     with c1:
-        if st.button("Adicionar", type="primary"):
+        if st.button("Adicionar", key="dlg_add", type="primary"):
             push_undo()
             st.session_state.df = pd.concat(
                 [st.session_state.df, pd.DataFrame([{c:entries[c] for c in cols}])],
@@ -454,7 +454,7 @@ if st.session_state.show_add_dialog:
             st.session_state.show_add_dialog = False
             st.rerun()
     with c2:
-        if st.button("Cancelar"): st.session_state.show_add_dialog=False; st.rerun()
+        if st.button("Cancelar", key="dlg_cancel_add"): st.session_state.show_add_dialog=False; st.rerun()
 
 if st.session_state.show_delete_dialog:
     st.markdown("---")
@@ -466,16 +466,16 @@ if st.session_state.show_delete_dialog:
         sel = st.selectbox("Selecione:", names)
         c1,c2 = st.columns(2)
         with c1:
-            if st.button("Excluir", type="primary"):
+            if st.button("Excluir", key="dlg_del", type="primary"):
                 push_undo()
                 st.session_state.df = df.drop(index=df.index[names.index(sel)]).reset_index(drop=True)
                 st.session_state.show_delete_dialog = False
                 st.rerun()
         with c2:
-            if st.button("Cancelar"): st.session_state.show_delete_dialog=False; st.rerun()
+            if st.button("Cancelar", key="dlg_cancel_del"): st.session_state.show_delete_dialog=False; st.rerun()
     else:
         st.write("Nada para excluir.")
-        if st.button("Fechar"): st.session_state.show_delete_dialog=False; st.rerun()
+        if st.button("Fechar", key="dlg_close_del"): st.session_state.show_delete_dialog=False; st.rerun()
 
 if st.session_state.show_tags_dialog:
     st.markdown("---")
@@ -497,13 +497,13 @@ if st.session_state.show_tags_dialog:
         else:
             st.caption("Nenhuma tag.")
         nt = st.text_input("Nova tag:", key="new_tag")
-        if st.button("+ Adicionar"):
+        if st.button("+ Adicionar", key="dlg_tag_add"):
             if nt.strip():
                 ts.add(nt.strip().lower()); push_undo()
                 if "tags" not in df.columns: st.session_state.df["tags"] = ""
                 st.session_state.df.loc[df.index[si],"tags"] = ", ".join(sorted(ts))
                 st.rerun()
-        if st.button("Fechar"): st.session_state.show_tags_dialog=False; st.rerun()
+        if st.button("Fechar", key="dlg_close_tags"): st.session_state.show_tags_dialog=False; st.rerun()
     else:
         st.write("Nenhuma coluna 'tags'." if df is not None and "tags" not in df.columns else "Vazio.")
-        if st.button("Fechar"): st.session_state.show_tags_dialog=False; st.rerun()
+        if st.button("Fechar", key="dlg_close_tags2"): st.session_state.show_tags_dialog=False; st.rerun()
