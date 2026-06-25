@@ -1,7 +1,54 @@
 import json
+import copy
 import pandas as pd
 
 ranking = "ranking_animes.json"
+_undo_stack = []       # stack of snapshots (list of dicts)
+_undo_cursor = -1      # -1 = no undo available; 0 = most recent saved state
+
+
+def push_undo():
+    """Save the current state onto the undo stack."""
+    global _undo_stack, _undo_cursor
+    df = carregar_dataframe()
+    snapshot = df.to_dict(orient="records") if not df.empty else []
+    # truncate future redos
+    _undo_stack = _undo_stack[:_undo_cursor + 1]
+    _undo_stack.append(snapshot)
+    # keep max 50 entries
+    if len(_undo_stack) > 50:
+        _undo_stack.pop(0)
+    _undo_cursor = len(_undo_stack) - 1
+
+
+def undo() -> bool:
+    """Restore the previous state. Returns True if undone, False if nothing to undo."""
+    global _undo_cursor
+    if _undo_cursor <= 0:
+        return False
+    _undo_cursor -= 1
+    snapshot = _undo_stack[_undo_cursor]
+    salvar_lista(snapshot)
+    return True
+
+
+def redo() -> bool:
+    """Reapply a previously undone state. Returns True if redone, False if nothing to redo."""
+    global _undo_cursor
+    if _undo_cursor >= len(_undo_stack) - 1:
+        return False
+    _undo_cursor += 1
+    snapshot = _undo_stack[_undo_cursor]
+    salvar_lista(snapshot)
+    return True
+
+
+def undo_disponivel() -> bool:
+    return _undo_cursor > 0
+
+
+def redo_disponivel() -> bool:
+    return _undo_cursor < len(_undo_stack) - 1
 
 
 def set_ranking_file(path: str):
@@ -353,6 +400,49 @@ def add_planejado_gui(nome, nota):
     items = carregar_items()
     items.append({"nome": nome, "nota": nota, "status": "planejado"})
     salvar_lista(items)
+
+
+def obter_stats():
+    """Retorna estatísticas como dict para os cards da UI."""
+    df = carregar_dataframe()
+    if df.empty:
+        return {"total": 0, "media": None}
+
+    stats = {"total": len(df)}
+
+    if "nota" in df.columns:
+        notas = pd.to_numeric(df["nota"], errors="coerce")
+        stats["media"] = round(notas.mean(), 1) if not notas.isna().all() else 0
+    else:
+        stats["media"] = None
+
+    if "status" in df.columns:
+        for s in ("completo", "assistindo", "planejado", "dropado"):
+            stats[s] = int((df["status"] == s).sum())
+    else:
+        for s in ("completo", "assistindo", "planejado", "dropado"):
+            stats[s] = 0
+
+    return stats
+
+
+def atualizar_item(idx, coluna, valor):
+    """Atualiza um campo específico de um item pelo índice."""
+    df = carregar_dataframe()
+    if 0 <= idx < len(df):
+        df.loc[df.index[idx], coluna] = valor
+        salvar_lista(df.to_dict(orient="records"))
+        return True
+    return False
+
+
+def exportar_csv(caminho: str) -> bool:
+    """Exporta o DataFrame atual para CSV."""
+    df = carregar_dataframe()
+    if df.empty:
+        return False
+    df.to_csv(caminho, index=False, encoding="utf-8-sig")
+    return True
 
 
 def salvar_tabela_generica(texto_tabela: str):

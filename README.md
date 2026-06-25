@@ -10,7 +10,7 @@
 
 Sistema de análise e processamento de arquivos JSON com interface gráfica moderna. CRUD dinâmico, agrupamento de dados e visualização gráfica — adaptável a qualquer lista JSON plana.
 
-![Tela inicial](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/refs/heads/main/images/Screenshot%202026-02-14%20214557.png)
+![1](assets/1-peakvault.png)
 
 ---
 
@@ -58,21 +58,18 @@ PeakVault/
 ├── interface.py                              # Interface gráfica (CustomTkinter)
 ├── logica.py                                 # Lógica de processamento dos dados
 ├── ranking_animes(sample_json_para_testar).json  # JSON de exemplo para testes
-├── images/                                   # Screenshots do projeto
+├── assets/                                   # Screenshots do projeto
 ├── LICENSE                                   # MIT
 └── README.md
 ```
 
-## Exemplos
+## Screenshots
 
-### JSON carregado e pronto para edição
-![JSON Carregado](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/380f477067d856c7aba776ec55479df80bce5631/images/Screenshot%202026-02-14%20214613.png)
+![2](assets/2-peakvault.png)
 
-### Dados agrupados por key
-![JSON Agrupado](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/380f477067d856c7aba776ec55479df80bce5631/images/Screenshot%202026-02-14%20214627.png)
+![3](assets/3-peakvault.png)
 
-### Gráficos gerados a partir dos agrupamentos
-![Gráficos](https://raw.githubusercontent.com/ismaeldouglasdev/PeakVault/refs/heads/main/images/Screenshot%202026-02-14%20220021.png)
+![4](assets/4-peakvault.png) ![5](assets/5-peakvault.png)
 
 ## Limitações
 
