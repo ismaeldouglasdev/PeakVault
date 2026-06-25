@@ -31,12 +31,11 @@ PROJECT_DIR = Path(__file__).parent
 # ── SESSION STATE ──
 def init_session():
     defaults = {
-        "df": None, "df_name": None,
+        "df": None, "df_name": None, "df_hash": None,
         "undo_stack": [], "undo_pos": -1,
         "search": "", "group_field": None,
         "show_add_dialog": False, "show_delete_dialog": False,
         "show_tags_dialog": False, "show_chart": False,
-        "chart_fig": None,
     }
     for k, v in defaults.items():
         if k not in st.session_state:
@@ -128,17 +127,20 @@ with st.sidebar:
 
     uploaded = st.file_uploader("Carregar lista JSON", type=["json"], label_visibility="collapsed")
 
-    if uploaded:
+    uploaded_hash = hash(uploaded.read()) if uploaded else None
+    if uploaded and uploaded_hash != st.session_state.df_hash:
         try:
+            uploaded.seek(0)
             data = json.loads(uploaded.read())
             df = pd.DataFrame(data) if isinstance(data, list) else pd.DataFrame([data])
             if not df.empty:
                 push_undo()
                 st.session_state.df = df
                 st.session_state.df_name = uploaded.name
+                st.session_state.df_hash = uploaded_hash
                 st.session_state.group_field = None
                 st.session_state.show_chart = False
-                st.toast(f"📂 Carregado: {uploaded.name}", icon="📂")
+                st.success(f"📂 Carregado: {uploaded.name}")
         except Exception as e:
             st.error(f"Erro ao ler JSON: {e}")
 
@@ -291,8 +293,6 @@ if df_filtered is not None and not df_filtered.empty:
     if edited is not None and not edited.equals(display_df):
         push_undo()
         st.session_state.df = edited
-        st.toast("✏️ Dados atualizados", icon="✏️")
-        st.rerun()
 
     if st.session_state.search.strip():
         st.caption(f"🔍 {len(df_filtered)} resultado(s) para '{st.session_state.search}'")
