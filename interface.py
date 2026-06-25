@@ -10,6 +10,7 @@ import threading
 import time
 import json
 import os
+from pathlib import Path
 
 importlib.reload(logica)
 ctk.set_appearance_mode("dark")
@@ -379,12 +380,13 @@ class ItemTrackerGUI:
         self.right_gif_frame.grid_propagate(False)
 
         try:
+            _gif_base = Path(__file__).parent / "gifs"
             gif_paths = [
-                "gifs/pixel.gif",
-                "gifs/cyberpunk-rain.gif",
-                "gifs/ezgif.com-optimize (1).gif",
-                "gifs/disc-resize.gif",
-                "gifs/error-.gif",
+                str(_gif_base / "pixel.gif"),
+                str(_gif_base / "cyberpunk-rain.gif"),
+                str(_gif_base / "ezgif.com-optimize (1).gif"),
+                str(_gif_base / "disc-resize.gif"),
+                str(_gif_base / "error-.gif"),
             ]
             self.left_gif_sets = []
             for path in gif_paths:
