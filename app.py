@@ -233,7 +233,7 @@ with st.sidebar:
 
         col_close, col_dl = st.columns([1, 2])
         with col_close:
-            if st.button("✕ Fechar", use_container_width=True, type="secondary"):
+            if st.button("✕ Fechar", width="stretch", type="secondary"):
                 st.session_state.df = None
                 st.session_state.df_name = None
                 st.session_state.undo_stack = []
@@ -251,7 +251,7 @@ with st.sidebar:
                     data=json_bytes,
                     file_name=st.session_state.df_name or "dados.json",
                     mime="application/json",
-                    use_container_width=True,
+                    width="stretch",
                 )
 
     st.divider()
@@ -271,19 +271,19 @@ with st.sidebar:
         st.markdown('<div class="section-label">GERAL</div>', unsafe_allow_html=True)
         c1, c2 = st.columns(2)
         with c1:
-            if st.button("📊  Listar", use_container_width=True, key="btn_listar"):
+            if st.button("📊  Listar", width="stretch", key="btn_listar"):
                 st.session_state.status_msg = f"✅ {len(get_filtered_df())} item(ns) listados"
                 st.session_state.status_color = "#4caf50"
         with c2:
-            if st.button("➕  Novo Item", use_container_width=True, key="btn_add"):
+            if st.button("➕  Novo Item", width="stretch", key="btn_add"):
                 st.session_state.show_add_dialog = True
 
         c3, c4 = st.columns(2)
         with c3:
-            if st.button("❌  Excluir", use_container_width=True, key="btn_del"):
+            if st.button("❌  Excluir", width="stretch", key="btn_del"):
                 st.session_state.show_delete_dialog = True
         with c4:
-            if st.button("📥  CSV", use_container_width=True, key="btn_csv"):
+            if st.button("📥  CSV", width="stretch", key="btn_csv"):
                 if st.session_state.df is not None:
                     csv = st.session_state.df.to_csv(index=False, encoding="utf-8-sig")
                     st.download_button(
@@ -291,7 +291,7 @@ with st.sidebar:
                         data=csv,
                         file_name=(st.session_state.df_name or "dados").rsplit(".", 1)[0] + ".csv",
                         mime="text/csv",
-                        use_container_width=True,
+                        width="stretch",
                         key="csv_dl_btn",
                     )
 
@@ -299,38 +299,38 @@ with st.sidebar:
             st.markdown('<div class="section-label">STATUS</div>', unsafe_allow_html=True)
             c5, c6 = st.columns(2)
             with c5:
-                if st.button("💔  Dropado", use_container_width=True, key="btn_drop"):
+                if st.button("💔  Dropado", width="stretch", key="btn_drop"):
                     st.session_state.show_add_dialog = "dropado"
             with c6:
-                if st.button("⏳  Planejar", use_container_width=True, key="btn_plan"):
+                if st.button("⏳  Planejar", width="stretch", key="btn_plan"):
                     st.session_state.show_add_dialog = "planejado"
 
         st.markdown('<div class="section-label">HISTÓRICO</div>', unsafe_allow_html=True)
         c7, c8 = st.columns(2)
         with c7:
-            if st.button("↩️  Desfazer", use_container_width=True, key="btn_undo"):
+            if st.button("↩️  Desfazer", width="stretch", key="btn_undo"):
                 undo()
                 st.rerun()
         with c8:
-            if st.button("↪️  Refazer", use_container_width=True, key="btn_redo"):
+            if st.button("↪️  Refazer", width="stretch", key="btn_redo"):
                 redo()
                 st.rerun()
 
         st.markdown('<div class="section-label">AÇÕES</div>', unsafe_allow_html=True)
         c9, c10 = st.columns(2)
         with c9:
-            if st.button("🏷️  Tags", use_container_width=True, key="btn_tags"):
+            if st.button("🏷️  Tags", width="stretch", key="btn_tags"):
                 st.session_state.show_tags_dialog = True
         with c10:
-            if st.button("📈  Gráfico", use_container_width=True, key="btn_chart"):
+            if st.button("📈  Gráfico", width="stretch", key="btn_chart"):
                 st.session_state.show_chart = not st.session_state.show_chart
 
     # ── GIF ──
     st.divider()
     gif_path = PROJECT_DIR / GIF_LIST[st.session_state.gif_idx]
     if gif_path.exists():
-        st.image(str(gif_path), use_container_width=True)
-    if st.button("⏭️ Próximo GIF", use_container_width=True, key="btn_gif"):
+        st.image(str(gif_path), width="stretch")
+    if st.button("⏭️ Próximo GIF", width="stretch", key="btn_gif"):
         st.session_state.gif_idx = (st.session_state.gif_idx + 1) % len(GIF_LIST)
         st.rerun()
 
@@ -401,7 +401,7 @@ with col_group:
         st.session_state.group_field = selected if selected else None
 with col_apply:
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("📊  Gráfico", key="btn_chart_main", use_container_width=True):
+    if st.button("📊  Gráfico", key="btn_chart_main", width="stretch"):
         st.session_state.show_chart = not st.session_state.show_chart
         st.rerun()
 
@@ -412,10 +412,11 @@ if df_filtered is not None and not df_filtered.empty:
         display_df[st.session_state.group_field] = display_df[st.session_state.group_field].astype(str)
         display_df = display_df.sort_values(by=st.session_state.group_field, na_position="last")
 
-    # Strip index from display
+    # Strip index from display — reset to range index first
+    display_df = display_df.reset_index(drop=True)
     edited = st.data_editor(
         display_df,
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
         num_rows="dynamic",
         key="data_editor",
@@ -506,7 +507,7 @@ if st.session_state.show_add_dialog:
 
         c_add, c_cancel = st.columns(2)
         with c_add:
-            if st.button("➕ ADICIONAR", use_container_width=True, type="primary"):
+            if st.button("➕ ADICIONAR", width="stretch", type="primary"):
                 push_undo()
                 new_row = {col: entries[col] for col in cols}
                 st.session_state.df = pd.concat(
@@ -518,7 +519,7 @@ if st.session_state.show_add_dialog:
                 st.session_state.show_add_dialog = False
                 st.rerun()
         with c_cancel:
-            if st.button("Cancelar", use_container_width=True):
+            if st.button("Cancelar", width="stretch"):
                 st.session_state.show_add_dialog = False
                 st.rerun()
 
@@ -533,7 +534,7 @@ if st.session_state.show_delete_dialog:
 
             c_del, c_cancel_del = st.columns(2)
             with c_del:
-                if st.button("🗑️ EXCLUIR", use_container_width=True, type="primary"):
+                if st.button("🗑️ EXCLUIR", width="stretch", type="primary"):
                     push_undo()
                     idx = names.index(selected_name)
                     st.session_state.df = st.session_state.df.drop(index=df.index[idx]).reset_index(drop=True)
@@ -542,7 +543,7 @@ if st.session_state.show_delete_dialog:
                     st.session_state.show_delete_dialog = False
                     st.rerun()
             with c_cancel_del:
-                if st.button("Cancelar", use_container_width=True):
+                if st.button("Cancelar", width="stretch"):
                     st.session_state.show_delete_dialog = False
                     st.rerun()
         else:
@@ -581,7 +582,7 @@ if st.session_state.show_tags_dialog:
             new_tag = st.text_input("Nova tag:", placeholder="Digite e pressione Enter...", key="new_tag_input")
             c_tag_add, c_tag_close = st.columns(2)
             with c_tag_add:
-                if st.button("+ Adicionar", use_container_width=True):
+                if st.button("+ Adicionar", width="stretch"):
                     if new_tag.strip():
                         current_tags.add(new_tag.strip().lower())
                         new_tags_str = ", ".join(sorted(current_tags))
@@ -591,7 +592,7 @@ if st.session_state.show_tags_dialog:
                         st.session_state.df.loc[df.index[selected_tag_idx], "tags"] = new_tags_str
                         st.rerun()
             with c_tag_close:
-                if st.button("Fechar", use_container_width=True):
+                if st.button("Fechar", width="stretch"):
                     st.session_state.show_tags_dialog = False
                     st.rerun()
         else:
