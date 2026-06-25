@@ -102,10 +102,14 @@ st.markdown("""
         background: var(--bg-elevated);
         border: 1px solid var(--border);
         border-radius: var(--radius);
-        padding: 12px 16px;
+        padding: 8px 12px;
     }
-    div[data-testid="metric-container"] label { color: var(--text-muted) !important; font-size: 12px !important; }
-    div[data-testid="metric-container"] div[data-testid="metric-value"] { color: var(--text) !important; }
+    div[data-testid="metric-container"] label {
+        color: var(--text-muted) !important; font-size: 22px !important; line-height: 1.4;
+    }
+    div[data-testid="metric-container"] div[data-testid="metric-value"] {
+        color: var(--text) !important; font-size: 20px !important; font-weight: 700 !important;
+    }
 
     /* Buttons */
     .stButton button {
