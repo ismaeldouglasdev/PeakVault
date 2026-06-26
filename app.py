@@ -110,6 +110,15 @@ st.markdown("""
         transform: translateY(-3px);
         box-shadow: 0 8px 24px rgba(141,90,151,.12);
     }
+    .hero-badge {
+        transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        cursor: default;
+    }
+    .hero-badge:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(141,90,151,.2);
+        background: var(--bg-hover) !important;
+    }
     .hero-card     { background: var(--bg-surface) !important; border: 1px solid var(--border) !important; }
     .hero-card-title { color: var(--text) !important; }
     .hero-card-desc  { color: var(--text-muted) !important; }
@@ -163,7 +172,7 @@ st.markdown("""
         border: none;
         font-weight: 600;
     }
-    .stButton button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(3,169,244,.15); }
+    .stButton button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(141,90,151,.2); }
     div[data-testid="stButton"] { gap: 4px; }
 
     /* Data editor */
@@ -188,6 +197,9 @@ st.markdown("""
     div[data-testid="stDataEditor"] td:focus {
         background: var(--bg-hover) !important;
         box-shadow: inset 0 0 0 2px var(--accent);
+    }
+    div[data-testid="stDataEditor"] td.selected {
+        background: rgba(141,90,151,.15) !important;
     }
     div[data-testid="stDataEditor"] .dvn-scroller { background: var(--bg-primary); }
 
@@ -454,10 +466,10 @@ if not has_data:
                 Gerenciador de listas JSON — edição, CRUD, busca, gráficos
             </p>
             <div class='hero-badges' style='display:flex;gap:8px;justify-content:center;margin-bottom:28px;flex-wrap:wrap;'>
-                <span style='background:var(--bg-elevated);padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);'>🐍 Python</span>
-                <span style='background:var(--bg-elevated);padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);'>📊 Streamlit</span>
-                <span style='background:var(--bg-elevated);padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);'>🐼 Pandas</span>
-                <span style='background:var(--bg-elevated);padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);'>📈 Matplotlib</span>
+                <span class='hero-badge' style='background:var(--bg-elevated);padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);'>🐍 Python</span>
+                <span class='hero-badge' style='background:var(--bg-elevated);padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);'>📊 Streamlit</span>
+                <span class='hero-badge' style='background:var(--bg-elevated);padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);'>🐼 Pandas</span>
+                <span class='hero-badge' style='background:var(--bg-elevated);padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);'>📈 Matplotlib</span>
             </div>
             <div class='hero-features' style='background:var(--bg-elevated);border-radius:12px;padding:24px;border:1px solid var(--border);text-align:left;'>
                 <p style='color:var(--text);margin:0 0 16px;font-weight:600;font-size:15px;'>📖 Como usar</p>
