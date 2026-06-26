@@ -201,7 +201,61 @@ st.markdown("""
     div[data-testid="stDataEditor"] td.selected {
         background: rgba(141,90,151,.15) !important;
     }
-    div[data-testid="stDataEditor"] .dvn-scroller { background: var(--bg-primary); }
+    div[data-testid="stDataEditor"] .dvn-scroller {
+        background: var(--bg-primary) !important;
+    }
+    div[data-testid="stDataEditor"] .dvn-scroll-inner,
+    div[data-testid="stDataEditor"] .dvn-stack,
+    div[data-testid="stDataEditor"] .dvn-stack > div {
+        background: var(--bg-primary) !important;
+    }
+    div[data-testid="stDataEditor"] .dvn-glide-caret {
+        background: var(--accent) !important;
+    }
+    /* Table header row */
+    div[data-testid="stDataEditor"] .dvn-header-row {
+        background: var(--bg-elevated) !important;
+    }
+    div[data-testid="stDataEditor"] .dvn-header-row th {
+        background: var(--bg-elevated) !important;
+        color: var(--text) !important;
+        border-bottom: 1px solid var(--border) !important;
+    }
+    /* Cells */
+    div[data-testid="stDataEditor"] .dvn-cell {
+        background: var(--bg-primary) !important;
+        color: var(--text) !important;
+        border-bottom: 1px solid rgba(106,80,94,.3) !important;
+    }
+    div[data-testid="stDataEditor"] .dvn-cell:focus,
+    div[data-testid="stDataEditor"] .dvn-cell:focus-within {
+        background: var(--bg-hover) !important;
+        box-shadow: inset 0 0 0 2px var(--accent) !important;
+    }
+    /* Secondary buttons (💾 JSON etc) */
+    .stDownloadButton button,
+    button[kind="secondary"] {
+        background: var(--bg-elevated) !important;
+        color: var(--text) !important;
+        border: 1px solid var(--border) !important;
+    }
+    .stDownloadButton button:hover,
+    button[kind="secondary"]:hover {
+        background: var(--bg-hover) !important;
+        border-color: var(--accent) !important;
+        color: var(--text) !important;
+    }
+    /* Primary buttons */
+    button[kind="primary"] {
+        background: var(--accent) !important;
+        color: #1f1210 !important;
+        border: none !important;
+        font-weight: 600;
+    }
+    button[kind="primary"]:hover {
+        background: #9e6aa8 !important;
+        color: #1f1210 !important;
+    }
 
     /* Select boxes */
     div[data-testid="stSelectbox"] > label {
