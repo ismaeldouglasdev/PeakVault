@@ -20,8 +20,7 @@ PROJECT_DIR = Path(__file__).parent
 # ── SESSION STATE ──
 def init_session():
     for k,v in {"df":None,"df_name":None,"df_hash":None,"undo_stack":[],"undo_pos":-1,"gif_idx":0,
-                "search":"","group_field":None,"show_add_dialog":False,"show_delete_dialog":False,
-                "show_tags_dialog":False,"show_chart":False}.items():
+                "search":"","group_field":None,"show_chart":False}.items():
         if k not in st.session_state: st.session_state[k]=v
 init_session()
 
@@ -292,10 +291,57 @@ with st.sidebar:
         st.markdown("##### Ações")
         c1,c2 = st.columns(2)
         with c1:
-            if st.button("➕ Novo", key="btn_add"): st.session_state.show_add_dialog=True
-            if st.button("🏷️ Tags", key="btn_tags"): st.session_state.show_tags_dialog=True
+            with st.popover("➕ Novo", width="stretch"):
+                cols = list(st.session_state.df.columns) if st.session_state.df is not None else ["nome"]
+                if "tags" not in cols: cols = list(cols)+["tags"]
+                entries = {}
+                for col in cols:
+                    entries[col] = st.text_input(col, key=f"add_{col}", placeholder=col)
+                if st.button("Adicionar", type="primary"):
+                    push_undo()
+                    st.session_state.df = pd.concat(
+                        [st.session_state.df, pd.DataFrame([{c:entries[c] for c in cols}])],
+                        ignore_index=True)
+                    st.rerun()
+            with st.popover("🏷️ Tags", width="stretch"):
+                df = st.session_state.df
+                if df is not None and not df.empty and "tags" in df.columns:
+                    nc = "nome" if "nome" in df.columns else df.columns[0]
+                    names = df[nc].astype(str).tolist()
+                    si = st.selectbox("Selecione:", range(len(names)), format_func=lambda i: names[i], key="tag_sel")
+                    ts = {t.strip() for t in str(df.iloc[si].get("tags","")).split(",") if t.strip()}
+                    if ts:
+                        for i,tag in enumerate(sorted(ts)):
+                            ca,cb = st.columns([3,1])
+                            ca.markdown(f"`{tag}`")
+                            if cb.button("✕", key=f"rt_{si}_{i}"):
+                                ts.discard(tag); push_undo()
+                                st.session_state.df.loc[df.index[si],"tags"] = ", ".join(sorted(ts))
+                                st.rerun()
+                    else:
+                        st.caption("Nenhuma tag.")
+                    nt = st.text_input("Nova tag:", key="new_tag")
+                    if st.button("+ Adicionar"):
+                        if nt.strip():
+                            ts.add(nt.strip().lower()); push_undo()
+                            if "tags" not in df.columns: st.session_state.df["tags"] = ""
+                            st.session_state.df.loc[df.index[si],"tags"] = ", ".join(sorted(ts))
+                            st.rerun()
+                else:
+                    st.caption("Nenhuma coluna 'tags'." if df is not None and "tags" not in df.columns else "Vazio.")
         with c2:
-            if st.button("❌ Excluir", key="btn_del"): st.session_state.show_delete_dialog=True
+            with st.popover("❌ Excluir", width="stretch"):
+                df = st.session_state.df
+                if df is not None and not df.empty:
+                    nc = "nome" if "nome" in df.columns else df.columns[0]
+                    names = df[nc].astype(str).tolist()
+                    sel = st.selectbox("Selecione:", names, key="del_sel")
+                    if st.button("Excluir", type="primary"):
+                        push_undo()
+                        st.session_state.df = df.drop(index=df.index[names.index(sel)]).reset_index(drop=True)
+                        st.rerun()
+                else:
+                    st.write("Nada para excluir.")
             if st.button("📥 CSV", key="btn_csv"):
                 csv = st.session_state.df.to_csv(index=False, encoding="utf-8-sig")
                 st.download_button("📥 Download", csv,
@@ -306,11 +352,33 @@ with st.sidebar:
             st.markdown("##### Status rápido")
             c1,c2 = st.columns(2)
             with c1:
-                if st.button("💔 Dropado", key="btn_drop"): st.session_state.show_add_dialog="dropado"
+                with st.popover("💔 Dropado", width="stretch"):
+                    nome_drop = st.text_input("Nome:", key="drop_nome")
+                    if st.button("Marcar como Dropado"):
+                        push_undo()
+                        nc = "nome" if "nome" in st.session_state.df.columns else st.session_state.df.columns[0]
+                        nr = {c:"" for c in st.session_state.df.columns}
+                        nr[nc] = nome_drop
+                        if "nota" in nr: nr["nota"] = "--"
+                        if "status" in nr: nr["status"] = "dropado"
+                        st.session_state.df = pd.concat(
+                            [st.session_state.df, pd.DataFrame([nr])], ignore_index=True)
+                        st.rerun()
                 if st.button("↩️ Desfazer", key="btn_undo"):
                     if undo(): st.rerun()
             with c2:
-                if st.button("⏳ Planejar", key="btn_plan"): st.session_state.show_add_dialog="planejado"
+                with st.popover("⏳ Planejar", width="stretch"):
+                    nome_plan = st.text_input("Nome:", key="plan_nome")
+                    if st.button("Adicionar aos Planejados"):
+                        push_undo()
+                        nc = "nome" if "nome" in st.session_state.df.columns else st.session_state.df.columns[0]
+                        nr = {c:"" for c in st.session_state.df.columns}
+                        nr[nc] = nome_plan
+                        if "nota" in nr: nr["nota"] = "--"
+                        if "status" in nr: nr["status"] = "planejado"
+                        st.session_state.df = pd.concat(
+                            [st.session_state.df, pd.DataFrame([nr])], ignore_index=True)
+                        st.rerun()
                 if st.button("↪️ Refazer", key="btn_redo"):
                     if redo(): st.rerun()
         else:
@@ -431,79 +499,4 @@ if st.session_state.show_chart and df_current is not None and not df_current.emp
     else:
         st.caption("Selecione uma coluna para agrupar.")
 
-# ═══════════════════════════════════════════════════════════════════
-# DIALOGS (inline forms — st.dialog com context manager é instável)
-# ═══════════════════════════════════════════════════════════════════
 
-if st.session_state.show_add_dialog:
-    st.markdown("---")
-    st.markdown("##### ➕ Novo Item")
-    preset = st.session_state.show_add_dialog if isinstance(st.session_state.show_add_dialog,str) else None
-    cols = list(st.session_state.df.columns) if st.session_state.df is not None else ["nome"]
-    if "tags" not in cols: cols = list(cols)+["tags"]
-    entries = {}
-    for col in cols:
-        entries[col] = st.text_input(col, value=(col=="status" and preset) or "", key=f"add_{col}", placeholder=col)
-    c1,c2 = st.columns(2)
-    with c1:
-        if st.button("Adicionar", key="dlg_add", type="primary"):
-            push_undo()
-            st.session_state.df = pd.concat(
-                [st.session_state.df, pd.DataFrame([{c:entries[c] for c in cols}])],
-                ignore_index=True)
-            st.session_state.show_add_dialog = False
-            st.rerun()
-    with c2:
-        if st.button("Cancelar", key="dlg_cancel_add"): st.session_state.show_add_dialog=False; st.rerun()
-
-if st.session_state.show_delete_dialog:
-    st.markdown("---")
-    st.markdown("##### ❌ Excluir Item")
-    df = st.session_state.df
-    if df is not None and not df.empty:
-        nc = "nome" if "nome" in df.columns else df.columns[0]
-        names = df[nc].astype(str).tolist()
-        sel = st.selectbox("Selecione:", names)
-        c1,c2 = st.columns(2)
-        with c1:
-            if st.button("Excluir", key="dlg_del", type="primary"):
-                push_undo()
-                st.session_state.df = df.drop(index=df.index[names.index(sel)]).reset_index(drop=True)
-                st.session_state.show_delete_dialog = False
-                st.rerun()
-        with c2:
-            if st.button("Cancelar", key="dlg_cancel_del"): st.session_state.show_delete_dialog=False; st.rerun()
-    else:
-        st.write("Nada para excluir.")
-        if st.button("Fechar", key="dlg_close_del"): st.session_state.show_delete_dialog=False; st.rerun()
-
-if st.session_state.show_tags_dialog:
-    st.markdown("---")
-    st.markdown("##### 🏷️ Tags")
-    df = st.session_state.df
-    if df is not None and not df.empty and "tags" in df.columns:
-        nc = "nome" if "nome" in df.columns else df.columns[0]
-        names = df[nc].astype(str).tolist()
-        si = st.selectbox("Selecione:", range(len(names)), format_func=lambda i: names[i])
-        ts = {t.strip() for t in str(df.iloc[si].get("tags","")).split(",") if t.strip()}
-        if ts:
-            for i,tag in enumerate(sorted(ts)):
-                c1,c2 = st.columns([3,1])
-                c1.markdown(f"`{tag}`")
-                if c2.button("✕", key=f"rt_{si}_{i}"):
-                    ts.discard(tag); push_undo()
-                    st.session_state.df.loc[df.index[si],"tags"] = ", ".join(sorted(ts))
-                    st.rerun()
-        else:
-            st.caption("Nenhuma tag.")
-        nt = st.text_input("Nova tag:", key="new_tag")
-        if st.button("+ Adicionar", key="dlg_tag_add"):
-            if nt.strip():
-                ts.add(nt.strip().lower()); push_undo()
-                if "tags" not in df.columns: st.session_state.df["tags"] = ""
-                st.session_state.df.loc[df.index[si],"tags"] = ", ".join(sorted(ts))
-                st.rerun()
-        if st.button("Fechar", key="dlg_close_tags"): st.session_state.show_tags_dialog=False; st.rerun()
-    else:
-        st.write("Nenhuma coluna 'tags'." if df is not None and "tags" not in df.columns else "Vazio.")
-        if st.button("Fechar", key="dlg_close_tags2"): st.session_state.show_tags_dialog=False; st.rerun()
