@@ -580,8 +580,8 @@ if not has_data:
         </div>
 """, unsafe_allow_html=True)
 
-# Forcar cores do Glide Data Grid (headers, checkboxes, acentos)
-st.markdown("""
+# Forcar cores do Glide Data Grid via componente HTML (script permitido)
+st.components.v1.html("""
 <script>
 const s = document.createElement('style');
 s.textContent = `
@@ -598,8 +598,8 @@ s.textContent = `
 `;
 document.head.appendChild(s);
 </script>
-""", unsafe_allow_html=True)
-    st.stop()
+""", height=0, width=0)
+st.stop()
 
 df_current = st.session_state.df
 stats = obter_stats(df_current)
