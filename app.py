@@ -84,6 +84,32 @@ st.markdown("""
         --radius: 10px;
         --radius-sm: 6px;
     }
+    /* ── Animações ── */
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50%      { transform: translateY(-8px); }
+    }
+    @keyframes glow {
+        0%, 100% { box-shadow: 0 0 4px var(--accent-glow); }
+        50%      { box-shadow: 0 0 16px var(--accent-glow); }
+    }
+    .hero-icon    { animation: float 3s ease-in-out infinite; }
+    .hero-title   { animation: fadeUp 0.6s ease-out both; }
+    .hero-sub     { animation: fadeUp 0.6s ease-out 0.15s both; }
+    .hero-badges  { animation: fadeUp 0.6s ease-out 0.3s both; }
+    .hero-features { animation: fadeUp 0.6s ease-out 0.45s both; }
+    .hero-hint    { animation: fadeUp 0.6s ease-out 0.6s both; }
+    .hero-features > div {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .hero-features > div:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(3,169,244,.12);
+    }
     .stApp { background: var(--bg-primary); }
     .stApp header { background: var(--bg-surface) !important; border-bottom: 1px solid var(--border); }
     section[data-testid="stSidebar"] > div:first-child {
@@ -417,18 +443,18 @@ if not has_data:
     with col2:
         st.markdown("""
         <div style='text-align:center;padding:60px 10px;'>
-            <div style='font-size:56px;margin-bottom:8px;'>🗂️</div>
-            <h1 style='margin:0 0 4px;font-size:32px;'>PeakVault</h1>
-            <p style='color:#8888aa;margin:0 0 24px;font-size:16px;'>
+            <div class='hero-icon' style='font-size:56px;margin-bottom:8px;'>🗂️</div>
+            <h1 class='hero-title' style='margin:0 0 4px;font-size:32px;'>PeakVault</h1>
+            <p class='hero-sub' style='color:#8888aa;margin:0 0 24px;font-size:16px;'>
                 Gerenciador de listas JSON — edição, CRUD, busca, gráficos
             </p>
-            <div style='display:flex;gap:8px;justify-content:center;margin-bottom:28px;flex-wrap:wrap;'>
+            <div class='hero-badges' style='display:flex;gap:8px;justify-content:center;margin-bottom:28px;flex-wrap:wrap;'>
                 <span style='background:#1e1e38;padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid #2a2a4a;'>🐍 Python</span>
                 <span style='background:#1e1e38;padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid #2a2a4a;'>📊 Streamlit</span>
                 <span style='background:#1e1e38;padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid #2a2a4a;'>🐼 Pandas</span>
                 <span style='background:#1e1e38;padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid #2a2a4a;'>📈 Matplotlib</span>
             </div>
-            <div style='background:#1e1e38;border-radius:12px;padding:24px;border:1px solid #2a2a4a;text-align:left;'>
+            <div class='hero-features' style='background:#1e1e38;border-radius:12px;padding:24px;border:1px solid #2a2a4a;text-align:left;'>
                 <p style='color:#e8e8f0;margin:0 0 16px;font-weight:600;font-size:15px;'>📖 Como usar</p>
                 <div style='display:grid;grid-template-columns:1fr 1fr;gap:12px;'>
                     <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
@@ -463,7 +489,7 @@ if not has_data:
                     </div>
                 </div>
             </div>
-            <p style='color:#555;margin-top:20px;font-size:12px;'>
+            <p class='hero-hint' style='color:#555;margin-top:20px;font-size:12px;'>
                 Faça upload de um JSON na barra lateral para começar
             </p>
         </div>
