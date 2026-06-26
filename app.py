@@ -578,7 +578,27 @@ if not has_data:
                 Faça upload de um JSON na barra lateral para começar
             </p>
         </div>
-        """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
+
+# Forcar cores do Glide Data Grid (headers, checkboxes, acentos)
+st.markdown("""
+<script>
+const s = document.createElement('style');
+s.textContent = `
+  :root {
+    --gdg-accent-color: #8d5a97 !important;
+    --gdg-accent-fg: #1f1210 !important;
+    --gdg-bg-color: #1a0e0c !important;
+    --gdg-header-bg-color: #1f1210 !important;
+    --gdg-text-dark: #ffedac !important;
+    --gdg-text-light: #a4a5ae !important;
+    --gdg-border-color: rgba(106,80,94,.25) !important;
+    --gdg-selection-color: rgba(141,90,151,.3) !important;
+  }
+`;
+document.head.appendChild(s);
+</script>
+""", unsafe_allow_html=True)
     st.stop()
 
 df_current = st.session_state.df
