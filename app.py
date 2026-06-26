@@ -134,14 +134,6 @@ st.markdown("""
     h1, h2, h3, h4 { color: var(--text) !important; font-weight: 600 !important; }
     .stMarkdown, .stCaption, p, li { color: var(--text); }
 
-    /* Cards */
-    /* Stats cards custom (substitui st.metric) */
-    .stat-card {
-        background: var(--bg-elevated); border: 1px solid var(--border);
-        border-radius: var(--radius); padding: 8px 12px 4px;
-        text-align: center;
-    }
-    .stat-card .stat-emoji { font-size: 32px; line-height: 1.2; display: block; }
     /* Sidebar buttons full width */
     section[data-testid="stSidebar"] .stButton button { width: 100% !important; }
     /* Popover — mais largo/retangular */
@@ -165,6 +157,45 @@ st.markdown("""
         font-weight: 500;
         transition: all .15s;
         border: 1px solid var(--border);
+    }
+    /* File upload chip */
+    div[data-testid="stFileChip"] {
+        background: var(--bg-elevated) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius-sm) !important;
+    }
+    div[data-testid="stFileChip"] .stFileChipName {
+        color: var(--text) !important;
+    }
+    div[data-testid="stFileChip"] small {
+        color: var(--text-muted) !important;
+    }
+    div[data-testid="stFileUploaderDropzone"] {
+        background: var(--bg-elevated) !important;
+        border-color: var(--border) !important;
+    }
+    /* Stats cards — menores */
+    .stat-card {
+        padding: 4px 8px 2px !important;
+    }
+    .stat-card .stat-emoji {
+        font-size: 22px !important;
+        line-height: 1.3 !important;
+        display: block;
+    }
+    .stat-card .stat-number {
+        font-size: 16px !important;
+        display: block;
+    }
+    /* Group by + stats row spacing */
+    .stSelectbox {
+        margin-bottom: 8px !important;
+    }
+    div[data-testid="column"] {
+        gap: 4px !important;
+    }
+    section[data-testid="stMain"] div[data-testid="stVerticalBlock"] > div[data-testid="stVerticalBlock"] {
+        gap: 8px !important;
     }
     .stButton button[kind="primary"] {
         background: var(--accent) !important;
@@ -212,25 +243,43 @@ st.markdown("""
     div[data-testid="stDataEditor"] .dvn-glide-caret {
         background: var(--accent) !important;
     }
-    /* Table header row */
+    /* Data grid internals (dvn = Glide Data Grid) */
     div[data-testid="stDataEditor"] .dvn-header-row {
         background: var(--bg-elevated) !important;
     }
-    div[data-testid="stDataEditor"] .dvn-header-row th {
+    div[data-testid="stDataEditor"] .dvn-header-row th,
+    div[data-testid="stDataEditor"] .dvn-header-row .dvn-th {
         background: var(--bg-elevated) !important;
-        color: var(--text) !important;
+        color: #a4a5ae !important;
         border-bottom: 1px solid var(--border) !important;
+        font-weight: 600 !important;
     }
-    /* Cells */
     div[data-testid="stDataEditor"] .dvn-cell {
         background: var(--bg-primary) !important;
         color: var(--text) !important;
-        border-bottom: 1px solid rgba(106,80,94,.3) !important;
+        border-bottom: 1px solid rgba(106,80,94,.2) !important;
     }
     div[data-testid="stDataEditor"] .dvn-cell:focus,
     div[data-testid="stDataEditor"] .dvn-cell:focus-within {
         background: var(--bg-hover) !important;
         box-shadow: inset 0 0 0 2px var(--accent) !important;
+    }
+    /* Even/odd row striping */
+    div[data-testid="stDataEditor"] .dvn-row-even .dvn-cell {
+        background: #241512 !important;
+    }
+    div[data-testid="stDataEditor"] .dvn-row-odd .dvn-cell {
+        background: var(--bg-primary) !important;
+    }
+    /* Selection overlay */
+    div[data-testid="stDataEditor"] .dvn-selection-overlay {
+        background: rgba(141,90,151,.1) !important;
+    }
+    /* Input inside cell */
+    div[data-testid="stDataEditor"] input,
+    div[data-testid="stDataEditor"] textarea {
+        background: var(--bg-primary) !important;
+        color: var(--text) !important;
     }
     /* Secondary buttons (💾 JSON etc) */
     .stDownloadButton button,
