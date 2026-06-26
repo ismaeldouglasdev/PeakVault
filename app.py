@@ -20,7 +20,7 @@ PROJECT_DIR = Path(__file__).parent
 # ── SESSION STATE ──
 def init_session():
     for k,v in {"df":None,"df_name":None,"df_hash":None,"undo_stack":[],"undo_pos":-1,"gif_idx":0,
-                "search":"","group_field":None,"show_chart":False}.items():
+                "search":"","group_field":None,"show_chart":False,"upload_key":0}.items():
         if k not in st.session_state: st.session_state[k]=v
 init_session()
 
@@ -72,13 +72,13 @@ def is_anime_like(df): return df is not None and {"nome","nota","status"}.issubs
 st.markdown("""
 <style>
     :root {
-        --bg-primary: #3e2723;
-        --bg-surface: #4a322e;
-        --bg-elevated: #5a403c;
-        --bg-hover: #6a504c;
-        --border: #907f9f;
+        --bg-primary: #1f1210;
+        --bg-surface: #2a1a17;
+        --bg-elevated: #35231f;
+        --bg-hover: #40302b;
+        --border: #6a505e;
         --accent: #8d5a97;
-        --accent-glow: #8d5a9780;
+        --accent-glow: #8d5a9760;
         --text: #ffedac;
         --text-muted: #a4a5ae;
         --radius: 10px;
@@ -289,7 +289,8 @@ with st.sidebar:
     st.caption("Gerenciador de listas JSON")
     st.divider()
 
-    uploaded = st.file_uploader("Carregar JSON", type=["json"], label_visibility="collapsed")
+    uploaded = st.file_uploader("Carregar JSON", type=["json"], label_visibility="collapsed",
+        key=f"upload_{st.session_state.upload_key}")
 
     uploaded_hash = hash(uploaded.read()) if uploaded else None
     if uploaded and uploaded_hash != st.session_state.df_hash:
@@ -317,6 +318,7 @@ with st.sidebar:
             if st.button("✕ Fechar", key="btn_close", type="secondary"):
                 for k in ["df","df_name","df_hash","undo_stack","undo_pos","group_field","show_chart"]:
                     st.session_state[k] = None if k in ("df","df_name","df_hash") else ([] if k=="undo_stack" else (False if k=="show_chart" else -1))
+                st.session_state.upload_key += 1
                 st.rerun()
         with col_dl:
             if st.session_state.df is not None:
