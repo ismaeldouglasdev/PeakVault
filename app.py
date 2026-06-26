@@ -106,6 +106,16 @@ st.markdown("""
     .stat-card .stat-emoji { font-size: 32px; line-height: 1.2; display: block; }
     /* Sidebar buttons full width */
     section[data-testid="stSidebar"] .stButton button { width: 100% !important; }
+    /* Popover — mais largo/retangular */
+    div[data-testid="stPopover"] > div[data-testid="stPopoverBody"] {
+        min-width: 320px !important;
+        max-width: 420px !important;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 8px;
+    }
+    div[data-testid="stPopover"] button[kind="primary"] { width: 100% !important; }
     .stat-card .stat-number {
         font-size: 22px; font-weight: 700; display: block;
         color: var(--text); margin-top: -2px;
@@ -286,7 +296,7 @@ with st.sidebar:
                     mime="application/json", width="stretch")
 
         st.divider()
-        st.text_input("🔍", placeholder="Buscar na lista...", key="search", label_visibility="collapsed")
+        st.text_input("🔍", placeholder="Buscar na lista... (filtra ao digitar)", key="search")
 
         st.markdown("##### Ações")
         c1,c2 = st.columns(2)
@@ -403,22 +413,59 @@ with st.sidebar:
 # MAIN
 # ═══════════════════════════════════════════════════════════════════
 if not has_data:
-    col1, col2, col3 = st.columns([1,2,1])
+    col1, col2, col3 = st.columns([1,2.5,1])
     with col2:
         st.markdown("""
-        <div style='text-align:center;padding:60px 20px;'>
-            <div style='font-size:48px;margin-bottom:16px;'>🗂️</div>
-            <h3 style='margin-bottom:8px;'>PeakVault</h3>
-            <p style='color:#8888aa;margin-bottom:24px;'>Carregue um arquivo JSON no menu lateral para começar.</p>
-            <div style='background:#1e1e38;border-radius:10px;padding:20px;text-align:left;border:1px solid #2a2a4a;'>
-                <p style='color:#e8e8f0;margin:0 0 8px 0;font-weight:600;'>📖 Como usar</p>
-                <ol style='color:#8888aa;margin:0;padding-left:20px;'>
-                    <li>Faça upload de um JSON (array de objetos) no menu à esquerda</li>
-                    <li>Edite os dados diretamente na tabela</li>
-                    <li>Adicione, exclua e busque itens</li>
-                    <li>Exporte em JSON ou CSV</li>
-                </ol>
+        <div style='text-align:center;padding:60px 10px;'>
+            <div style='font-size:56px;margin-bottom:8px;'>🗂️</div>
+            <h1 style='margin:0 0 4px;font-size:32px;'>PeakVault</h1>
+            <p style='color:#8888aa;margin:0 0 24px;font-size:16px;'>
+                Gerenciador de listas JSON — edição, CRUD, busca, gráficos
+            </p>
+            <div style='display:flex;gap:8px;justify-content:center;margin-bottom:28px;flex-wrap:wrap;'>
+                <span style='background:#1e1e38;padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid #2a2a4a;'>🐍 Python</span>
+                <span style='background:#1e1e38;padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid #2a2a4a;'>📊 Streamlit</span>
+                <span style='background:#1e1e38;padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid #2a2a4a;'>🐼 Pandas</span>
+                <span style='background:#1e1e38;padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid #2a2a4a;'>📈 Matplotlib</span>
             </div>
+            <div style='background:#1e1e38;border-radius:12px;padding:24px;border:1px solid #2a2a4a;text-align:left;'>
+                <p style='color:#e8e8f0;margin:0 0 16px;font-weight:600;font-size:15px;'>📖 Como usar</p>
+                <div style='display:grid;grid-template-columns:1fr 1fr;gap:12px;'>
+                    <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
+                        <div style='font-size:20px;margin-bottom:4px;'>📂</div>
+                        <div style='font-weight:600;font-size:13px;color:#e8e8f0;'>Upload</div>
+                        <div style='font-size:12px;color:#8888aa;'>Carregue qualquer JSON</div>
+                    </div>
+                    <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
+                        <div style='font-size:20px;margin-bottom:4px;'>✏️</div>
+                        <div style='font-weight:600;font-size:13px;color:#e8e8f0;'>Edição</div>
+                        <div style='font-size:12px;color:#8888aa;'>Edite inline na tabela</div>
+                    </div>
+                    <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
+                        <div style='font-size:20px;margin-bottom:4px;'>🔍</div>
+                        <div style='font-weight:600;font-size:13px;color:#e8e8f0;'>Busca</div>
+                        <div style='font-size:12px;color:#8888aa;'>Filtro em tempo real</div>
+                    </div>
+                    <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
+                        <div style='font-size:20px;margin-bottom:4px;'>📊</div>
+                        <div style='font-weight:600;font-size:13px;color:#e8e8f0;'>Gráficos</div>
+                        <div style='font-size:12px;color:#8888aa;'>Visualize agrupamentos</div>
+                    </div>
+                    <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
+                        <div style='font-size:20px;margin-bottom:4px;'>🏷️</div>
+                        <div style='font-weight:600;font-size:13px;color:#e8e8f0;'>Tags</div>
+                        <div style='font-size:12px;color:#8888aa;'>Organize com etiquetas</div>
+                    </div>
+                    <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
+                        <div style='font-size:20px;margin-bottom:4px;'>📥</div>
+                        <div style='font-weight:600;font-size:13px;color:#e8e8f0;'>Exportar</div>
+                        <div style='font-size:12px;color:#8888aa;'>JSON ou CSV</div>
+                    </div>
+                </div>
+            </div>
+            <p style='color:#555;margin-top:20px;font-size:12px;'>
+                Faça upload de um JSON na barra lateral para começar
+            </p>
         </div>
         """, unsafe_allow_html=True)
     st.stop()
