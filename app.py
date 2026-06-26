@@ -222,28 +222,52 @@ st.markdown("""
     .stButton button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(141,90,151,.2); }
     div[data-testid="stButton"] { gap: 4px; }
 
-    /* Data editor */
+    /* Data editor — escuro forçado */
     div[data-testid="stDataEditor"] {
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        background: var(--bg-primary);
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius) !important;
+        background: #1a0e0c !important;
         font-size: 14px;
     }
-    div[data-testid="stDataEditor"] table { background: var(--bg-primary); }
-    div[data-testid="stDataEditor"] th {
-        background: var(--bg-elevated) !important;
+    div[data-testid="stDataEditor"] table,
+    div[data-testid="stDataEditor"] thead,
+    div[data-testid="stDataEditor"] tbody,
+    div[data-testid="stDataEditor"] tr,
+    div[data-testid="stDataEditor"] td {
+        background: transparent !important;
         color: var(--text) !important;
+        border-color: rgba(106,80,94,.25) !important;
+    }
+    div[data-testid="stDataEditor"] thead,
+    div[data-testid="stDataEditor"] th {
+        background: #1f1210 !important;
+        color: #a4a5ae !important;
         font-weight: 600 !important;
         border-bottom: 1px solid var(--border) !important;
     }
-    div[data-testid="stDataEditor"] td {
-        background: var(--bg-primary) !important;
-        color: var(--text) !important;
-        border-bottom: 1px solid var(--border) !important;
+    div[data-testid="stDataEditor"] th:hover {
+        background: #2a1a17 !important;
     }
-    div[data-testid="stDataEditor"] td:focus {
-        background: var(--bg-hover) !important;
-        box-shadow: inset 0 0 0 2px var(--accent);
+    div[data-testid="stDataEditor"] td {
+        background: #1a0e0c !important;
+        border-bottom: 1px solid rgba(106,80,94,.15) !important;
+    }
+    div[data-testid="stDataEditor"] tr:nth-child(even) td {
+        background: #1f1210 !important;
+    }
+    div[data-testid="stDataEditor"] input[type="checkbox"] {
+        accent-color: #8d5a97 !important;
+    }
+    div[data-testid="stDataEditor"] input,
+    div[data-testid="stDataEditor"] textarea {
+        background: transparent !important;
+        color: var(--text) !important;
+    }
+    div[data-testid="stDataEditor"] td:focus,
+    div[data-testid="stDataEditor"] td:focus-within {
+        background: #2a1a17 !important;
+        outline: 2px solid var(--accent) !important;
+        outline-offset: -2px;
     }
     div[data-testid="stDataEditor"] td.selected {
         background: rgba(141,90,151,.15) !important;
