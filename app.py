@@ -205,6 +205,7 @@ st.markdown("""
     /* Group by + stats row spacing */
     .stSelectbox {
         margin-bottom: 8px !important;
+        margin-top: 8px !important;
     }
     div[data-testid="column"] {
         gap: 4px !important;
