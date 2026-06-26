@@ -248,134 +248,6 @@ st.markdown("""
     div[data-testid="stDataEditor"] td.selected {
         background: rgba(141,90,151,.15) !important;
     }
-    div[data-testid="stDataEditor"] .dvn-scroller {
-        background: var(--bg-primary) !important;
-    }
-    div[data-testid="stDataEditor"] .dvn-scroll-inner,
-    div[data-testid="stDataEditor"] .dvn-stack,
-    div[data-testid="stDataEditor"] .dvn-stack > div {
-        background: var(--bg-primary) !important;
-    }
-    div[data-testid="stDataEditor"] .dvn-glide-caret {
-        background: var(--accent) !important;
-    }
-    /* Data editor — forcar cores escuras */
-    div[data-testid="stDataEditor"] table,
-    div[data-testid="stDataEditor"] thead,
-    div[data-testid="stDataEditor"] tbody,
-    div[data-testid="stDataEditor"] tr,
-    div[data-testid="stDataEditor"] th,
-    div[data-testid="stDataEditor"] td {
-        background: var(--bg-primary) !important;
-        color: var(--text) !important;
-        border-color: var(--border) !important;
-    }
-    div[data-testid="stDataEditor"] thead,
-    div[data-testid="stDataEditor"] th {
-        background: var(--bg-elevated) !important;
-        color: var(--text-muted) !important;
-        font-weight: 600 !important;
-        border-bottom: 1px solid var(--border) !important;
-    }
-    div[data-testid="stDataEditor"] tr:nth-child(even) td {
-        background: #241512 !important;
-    }
-    div[data-testid="stDataEditor"] tr:nth-child(odd) td {
-        background: var(--bg-primary) !important;
-    }
-    div[data-testid="stDataEditor"] input,
-    div[data-testid="stDataEditor"] textarea {
-        background: transparent !important;
-        color: var(--text) !important;
-    }
-    /* Glide Data Grid internals */
-    div[data-testid="stDataEditor"] .dvn-header-row {
-        background: var(--bg-elevated) !important;
-    }
-    div[data-testid="stDataEditor"] .dvn-header-row th,
-    div[data-testid="stDataEditor"] .dvn-header-row .dvn-th {
-        background: var(--bg-elevated) !important;
-        color: #a4a5ae !important;
-        border-bottom: 1px solid var(--border) !important;
-        font-weight: 600 !important;
-    }
-    div[data-testid="stDataEditor"] .dvn-cell {
-        background: var(--bg-primary) !important;
-        color: var(--text) !important;
-        border-bottom: 1px solid rgba(106,80,94,.2) !important;
-    }
-    div[data-testid="stDataEditor"] .dvn-cell:focus,
-    div[data-testid="stDataEditor"] .dvn-cell:focus-within {
-        background: var(--bg-hover) !important;
-        box-shadow: inset 0 0 0 2px var(--accent) !important;
-    }
-    /* Even/odd row striping */
-    div[data-testid="stDataEditor"] .dvn-row-even .dvn-cell {
-        background: #241512 !important;
-    }
-    div[data-testid="stDataEditor"] .dvn-row-odd .dvn-cell {
-        background: var(--bg-primary) !important;
-    }
-    /* Selection overlay */
-    div[data-testid="stDataEditor"] .dvn-selection-overlay {
-        background: rgba(141,90,151,.1) !important;
-    }
-    /* Input inside cell */
-    div[data-testid="stDataEditor"] input,
-    div[data-testid="stDataEditor"] textarea {
-        background: var(--bg-primary) !important;
-        color: var(--text) !important;
-    }
-    /* Secondary buttons (💾 JSON etc) */
-    .stDownloadButton button,
-    button[kind="secondary"] {
-        background: var(--bg-elevated) !important;
-        color: var(--text) !important;
-        border: 1px solid var(--border) !important;
-    }
-    .stDownloadButton button:hover,
-    button[kind="secondary"]:hover {
-        background: var(--bg-hover) !important;
-        border-color: var(--accent) !important;
-        color: var(--text) !important;
-    }
-    /* Primary buttons */
-    button[kind="primary"] {
-        background: var(--accent) !important;
-        color: #1f1210 !important;
-        border: none !important;
-        font-weight: 600;
-    }
-    button[kind="primary"]:hover {
-        background: #9e6aa8 !important;
-        color: #1f1210 !important;
-    }
-
-    /* Select boxes */
-    div[data-testid="stSelectbox"] > label {
-        color: var(--text-muted) !important;
-        font-size: 13px !important;
-        font-weight: 500 !important;
-    }
-    div[data-testid="stSelectbox"] > div > div {
-        background: var(--bg-elevated);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        color: var(--text);
-    }
-    div[data-testid="stSelectbox"] > div > div:focus { border-color: var(--accent); }
-    .stSelectbox [data-baseweb="select"] { margin-top: 0 !important; }
-    div[data-testid="stSelectbox"] { gap: 2px !important; }
-
-    /* Text inputs */
-    div[data-testid="stTextInput"] input {
-        background: var(--bg-elevated);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        color: var(--text);
-    }
-    div[data-testid="stTextInput"] input:focus { border-color: var(--accent); }
-
     /* File uploader */
     div[data-testid="stFileUploader"] section {
         background: var(--bg-elevated);
@@ -682,7 +554,7 @@ with cg:
     if df_current is not None:
         opts = [""] + list(df_current.columns)
         idx = opts.index(st.session_state.group_field) if st.session_state.group_field in opts else 0
-        sel = st.selectbox("📊 Agrupar por coluna", options=opts, index=idx)
+        sel = st.selectbox("🗂️ Agrupar por coluna", options=opts, index=idx)
         st.session_state.group_field = sel if sel else None
 with cc:
     st.markdown("<br>",unsafe_allow_html=True)
