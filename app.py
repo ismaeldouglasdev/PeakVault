@@ -174,18 +174,33 @@ st.markdown("""
         background: var(--bg-elevated) !important;
         border-color: var(--border) !important;
     }
-    /* Stats cards — menores */
+    /* Stats cards — flex row com label */
     .stat-card {
-        padding: 4px 8px 2px !important;
+        padding: 6px 8px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        min-height: 40px !important;
     }
     .stat-card .stat-emoji {
         font-size: 22px !important;
-        line-height: 1.3 !important;
-        display: block;
+        line-height: 1 !important;
+        flex-shrink: 0 !important;
+    }
+    .stat-card .stat-info {
+        display: flex !important;
+        flex-direction: column !important;
+        line-height: 1.2 !important;
     }
     .stat-card .stat-number {
-        font-size: 16px !important;
-        display: block;
+        font-size: 17px !important;
+        font-weight: 700 !important;
+    }
+    .stat-card .stat-label {
+        font-size: 10px !important;
+        color: var(--text-muted) !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
     }
     /* Group by + stats row spacing */
     .stSelectbox {
@@ -243,7 +258,36 @@ st.markdown("""
     div[data-testid="stDataEditor"] .dvn-glide-caret {
         background: var(--accent) !important;
     }
-    /* Data grid internals (dvn = Glide Data Grid) */
+    /* Data editor — forcar cores escuras */
+    div[data-testid="stDataEditor"] table,
+    div[data-testid="stDataEditor"] thead,
+    div[data-testid="stDataEditor"] tbody,
+    div[data-testid="stDataEditor"] tr,
+    div[data-testid="stDataEditor"] th,
+    div[data-testid="stDataEditor"] td {
+        background: var(--bg-primary) !important;
+        color: var(--text) !important;
+        border-color: var(--border) !important;
+    }
+    div[data-testid="stDataEditor"] thead,
+    div[data-testid="stDataEditor"] th {
+        background: var(--bg-elevated) !important;
+        color: var(--text-muted) !important;
+        font-weight: 600 !important;
+        border-bottom: 1px solid var(--border) !important;
+    }
+    div[data-testid="stDataEditor"] tr:nth-child(even) td {
+        background: #241512 !important;
+    }
+    div[data-testid="stDataEditor"] tr:nth-child(odd) td {
+        background: var(--bg-primary) !important;
+    }
+    div[data-testid="stDataEditor"] input,
+    div[data-testid="stDataEditor"] textarea {
+        background: transparent !important;
+        color: var(--text) !important;
+    }
+    /* Glide Data Grid internals */
     div[data-testid="stDataEditor"] .dvn-header-row {
         background: var(--bg-elevated) !important;
     }
@@ -622,13 +666,13 @@ stats = obter_stats(df_current)
 # ── STATS ROW (HTML custom — st.metric é instável com emojis) ──
 show_s = is_anime_like(df_current)
 cols = st.columns(6)
-cfg = [("📊","total","#ffedac"),("⭐","media","#8d5a97"),("✅","completo","#4caf50"),
-       ("📺","assistindo","#907f9f"),("⏳","planejado","#ffa726"),("💔","dropado","#ef5350")]
-for col,(icon,key,c) in zip(cols,cfg):
+cfg = [("📊","total","#ffedac","TOTAL"),("⭐","media","#8d5a97","MÉDIA"),("✅","completo","#4caf50","COMPLETO"),
+       ("📺","assistindo","#907f9f","ASSISTINDO"),("⏳","planejado","#ffa726","PLANEJADO"),("💔","dropado","#ef5350","DROPADO")]
+for col,(icon,key,c,label) in zip(cols,cfg):
     val = stats.get(key,0) if key!="media" else (stats.get("media","—") or "—")
     if key in ("completo","assistindo","planejado","dropado") and not show_s:
         col.empty(); continue
-    col.markdown(f'<div class="stat-card"><span class="stat-emoji">{icon}</span><span class="stat-number" style="color:{c};">{val}</span></div>', unsafe_allow_html=True)
+    col.markdown(f'<div class="stat-card"><span class="stat-emoji">{icon}</span><div class="stat-info"><span class="stat-number" style="color:{c};">{val}</span><span class="stat-label">{label}</span></div></div>', unsafe_allow_html=True)
 
 # ── GROUP + CHART ──
 df_filtered = get_filtered_df()
