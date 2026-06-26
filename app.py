@@ -14,7 +14,7 @@ import logica
 
 # ── CONFIG ──
 st.set_page_config(page_title="PeakVault", page_icon="🗂️", layout="wide")
-CORES = {"completo":"#4caf50","assistindo":"#03a9f4","planejado":"#ffa726","dropado":"#ef5350"}
+CORES = {"completo":"#4caf50","assistindo":"#8d5a97","planejado":"#ffa726","dropado":"#ef5350"}
 PROJECT_DIR = Path(__file__).parent
 
 # ── SESSION STATE ──
@@ -72,15 +72,15 @@ def is_anime_like(df): return df is not None and {"nome","nota","status"}.issubs
 st.markdown("""
 <style>
     :root {
-        --bg-primary: #0d0d1a;
-        --bg-surface: #16162a;
-        --bg-elevated: #1e1e38;
-        --bg-hover: #282848;
-        --border: #2a2a4a;
-        --accent: #03a9f4;
-        --accent-glow: #03a9f480;
-        --text: #e8e8f0;
-        --text-muted: #8888aa;
+        --bg-primary: #3e2723;
+        --bg-surface: #4a322e;
+        --bg-elevated: #5a403c;
+        --bg-hover: #6a504c;
+        --border: #907f9f;
+        --accent: #8d5a97;
+        --accent-glow: #8d5a9780;
+        --text: #ffedac;
+        --text-muted: #a4a5ae;
         --radius: 10px;
         --radius-sm: 6px;
     }
@@ -108,8 +108,11 @@ st.markdown("""
     }
     .hero-features > div:hover {
         transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(3,169,244,.12);
+        box-shadow: 0 8px 24px rgba(141,90,151,.12);
     }
+    .hero-card     { background: var(--bg-surface) !important; border: 1px solid var(--border) !important; }
+    .hero-card-title { color: var(--text) !important; }
+    .hero-card-desc  { color: var(--text-muted) !important; }
     .stApp { background: var(--bg-primary); }
     .stApp header { background: var(--bg-surface) !important; border-bottom: 1px solid var(--border); }
     section[data-testid="stSidebar"] > div:first-child {
@@ -445,51 +448,51 @@ if not has_data:
         <div style='text-align:center;padding:60px 10px;'>
             <div class='hero-icon' style='font-size:56px;margin-bottom:8px;'>🗂️</div>
             <h1 class='hero-title' style='margin:0 0 4px;font-size:32px;'>PeakVault</h1>
-            <p class='hero-sub' style='color:#8888aa;margin:0 0 24px;font-size:16px;'>
+            <p class='hero-sub' style='color:var(--text-muted);margin:0 0 24px;font-size:16px;'>
                 Gerenciador de listas JSON — edição, CRUD, busca, gráficos
             </p>
             <div class='hero-badges' style='display:flex;gap:8px;justify-content:center;margin-bottom:28px;flex-wrap:wrap;'>
-                <span style='background:#1e1e38;padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid #2a2a4a;'>🐍 Python</span>
-                <span style='background:#1e1e38;padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid #2a2a4a;'>📊 Streamlit</span>
-                <span style='background:#1e1e38;padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid #2a2a4a;'>🐼 Pandas</span>
-                <span style='background:#1e1e38;padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid #2a2a4a;'>📈 Matplotlib</span>
+                <span style='background:var(--bg-elevated);padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);'>🐍 Python</span>
+                <span style='background:var(--bg-elevated);padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);'>📊 Streamlit</span>
+                <span style='background:var(--bg-elevated);padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);'>🐼 Pandas</span>
+                <span style='background:var(--bg-elevated);padding:4px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);'>📈 Matplotlib</span>
             </div>
-            <div class='hero-features' style='background:#1e1e38;border-radius:12px;padding:24px;border:1px solid #2a2a4a;text-align:left;'>
-                <p style='color:#e8e8f0;margin:0 0 16px;font-weight:600;font-size:15px;'>📖 Como usar</p>
+            <div class='hero-features' style='background:var(--bg-elevated);border-radius:12px;padding:24px;border:1px solid var(--border);text-align:left;'>
+                <p style='color:var(--text);margin:0 0 16px;font-weight:600;font-size:15px;'>📖 Como usar</p>
                 <div style='display:grid;grid-template-columns:1fr 1fr;gap:12px;'>
-                    <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
+                    <div class='hero-card' style='border-radius:8px;padding:12px;'>
                         <div style='font-size:20px;margin-bottom:4px;'>📂</div>
-                        <div style='font-weight:600;font-size:13px;color:#e8e8f0;'>Upload</div>
-                        <div style='font-size:12px;color:#8888aa;'>Carregue qualquer JSON</div>
+                        <div class='hero-card-title' style='font-weight:600;font-size:13px;'>Upload</div>
+                        <div class='hero-card-desc' style='font-size:12px;'>Carregue qualquer JSON</div>
                     </div>
-                    <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
+                    <div class='hero-card' style='border-radius:8px;padding:12px;'>
                         <div style='font-size:20px;margin-bottom:4px;'>✏️</div>
-                        <div style='font-weight:600;font-size:13px;color:#e8e8f0;'>Edição</div>
-                        <div style='font-size:12px;color:#8888aa;'>Edite inline na tabela</div>
+                        <div class='hero-card-title' style='font-weight:600;font-size:13px;'>Edição</div>
+                        <div class='hero-card-desc' style='font-size:12px;'>Edite inline na tabela</div>
                     </div>
-                    <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
+                    <div class='hero-card' style='border-radius:8px;padding:12px;'>
                         <div style='font-size:20px;margin-bottom:4px;'>🔍</div>
-                        <div style='font-weight:600;font-size:13px;color:#e8e8f0;'>Busca</div>
-                        <div style='font-size:12px;color:#8888aa;'>Filtro em tempo real</div>
+                        <div class='hero-card-title' style='font-weight:600;font-size:13px;'>Busca</div>
+                        <div class='hero-card-desc' style='font-size:12px;'>Filtro em tempo real</div>
                     </div>
-                    <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
+                    <div class='hero-card' style='border-radius:8px;padding:12px;'>
                         <div style='font-size:20px;margin-bottom:4px;'>📊</div>
-                        <div style='font-weight:600;font-size:13px;color:#e8e8f0;'>Gráficos</div>
-                        <div style='font-size:12px;color:#8888aa;'>Visualize agrupamentos</div>
+                        <div class='hero-card-title' style='font-weight:600;font-size:13px;'>Gráficos</div>
+                        <div class='hero-card-desc' style='font-size:12px;'>Visualize agrupamentos</div>
                     </div>
-                    <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
+                    <div class='hero-card' style='border-radius:8px;padding:12px;'>
                         <div style='font-size:20px;margin-bottom:4px;'>🏷️</div>
-                        <div style='font-weight:600;font-size:13px;color:#e8e8f0;'>Tags</div>
-                        <div style='font-size:12px;color:#8888aa;'>Organize com etiquetas</div>
+                        <div class='hero-card-title' style='font-weight:600;font-size:13px;'>Tags</div>
+                        <div class='hero-card-desc' style='font-size:12px;'>Organize com etiquetas</div>
                     </div>
-                    <div style='background:#16162a;border-radius:8px;padding:12px;border:1px solid #2a2a4a;'>
+                    <div class='hero-card' style='border-radius:8px;padding:12px;'>
                         <div style='font-size:20px;margin-bottom:4px;'>📥</div>
-                        <div style='font-weight:600;font-size:13px;color:#e8e8f0;'>Exportar</div>
-                        <div style='font-size:12px;color:#8888aa;'>JSON ou CSV</div>
+                        <div class='hero-card-title' style='font-weight:600;font-size:13px;'>Exportar</div>
+                        <div class='hero-card-desc' style='font-size:12px;'>JSON ou CSV</div>
                     </div>
                 </div>
             </div>
-            <p class='hero-hint' style='color:#555;margin-top:20px;font-size:12px;'>
+            <p class='hero-hint' style='color:var(--text-muted);margin-top:20px;font-size:12px;'>
                 Faça upload de um JSON na barra lateral para começar
             </p>
         </div>
@@ -502,8 +505,8 @@ stats = obter_stats(df_current)
 # ── STATS ROW (HTML custom — st.metric é instável com emojis) ──
 show_s = is_anime_like(df_current)
 cols = st.columns(6)
-cfg = [("📊","total","#fff"),("⭐","media","#03a9f4"),("✅","completo","#4caf50"),
-       ("📺","assistindo","#03a9f4"),("⏳","planejado","#ffa726"),("💔","dropado","#ef5350")]
+cfg = [("📊","total","#ffedac"),("⭐","media","#8d5a97"),("✅","completo","#4caf50"),
+       ("📺","assistindo","#907f9f"),("⏳","planejado","#ffa726"),("💔","dropado","#ef5350")]
 for col,(icon,key,c) in zip(cols,cfg):
     val = stats.get(key,0) if key!="media" else (stats.get("media","—") or "—")
     if key in ("completo","assistindo","planejado","dropado") and not show_s:
@@ -543,7 +546,7 @@ if df_filtered is not None and not df_filtered.empty:
     if st.session_state.search.strip():
         st.caption(f"{len(df_filtered)} resultado(s) para \"{st.session_state.search}\"")
 else:
-    st.markdown("<div style='text-align:center;padding:40px;color:#8888aa;'>📭 Nenhum item encontrado.</div>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align:center;padding:40px;color:var(--text-muted);'>📭 Nenhum item encontrado.</div>", unsafe_allow_html=True)
 
 # ── CHART ──
 if st.session_state.show_chart and df_current is not None and not df_current.empty:
@@ -555,15 +558,15 @@ if st.session_state.show_chart and df_current is not None and not df_current.emp
         vc = df_current[coluna].astype(str).value_counts()
         if not vc.empty:
             fig,ax = plt.subplots(figsize=(10,4))
-            bars = ax.bar(vc.index, vc.values, color="#03a9f4", width=0.55, edgecolor="#03a9f480", linewidth=0.5)
-            ax.set_title(f"Distribuição por {coluna}", fontsize=14, color="#e8e8f0", pad=12)
-            ax.set_ylabel("Contagem", color="#8888aa")
-            ax.tick_params(colors="#8888aa")
-            ax.set_facecolor("#0d0d1a")
-            fig.patch.set_facecolor("#0d0d1a")
+            bars =             ax.bar(vc.index, vc.values, color="#8d5a97", width=0.55, edgecolor="#8d5a9780", linewidth=0.5)
+            ax.set_title(f"Distribuição por {coluna}", fontsize=14, color="#ffedac", pad=12)
+            ax.set_ylabel("Contagem", color="#a4a5ae")
+            ax.tick_params(colors="#a4a5ae")
+            ax.set_facecolor("#3e2723")
+            fig.patch.set_facecolor("#3e2723")
             for spine in ax.spines.values(): spine.set_visible(False)
             ax.grid(axis="y", alpha=0.1)
-            plt.xticks(rotation=35, ha="right", color="#8888aa")
+            plt.xticks(rotation=35, ha="right", color="#a4a5ae")
             plt.tight_layout()
             st.pyplot(fig)
             plt.close(fig)
