@@ -599,7 +599,6 @@ s.textContent = `
 document.head.appendChild(s);
 </script>
 """, height=0, width=0)
-st.stop()
 
 df_current = st.session_state.df
 stats = obter_stats(df_current)
