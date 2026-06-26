@@ -202,6 +202,30 @@ st.markdown("""
         text-transform: uppercase !important;
         letter-spacing: 0.3px !important;
     }
+    /* Select box — visivel */
+    div[data-testid="stSelectbox"] > div > div {
+        background: var(--bg-elevated) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;
+        min-height: 36px;
+    }
+    div[data-testid="stSelectbox"] > div > div:focus-within {
+        border-color: var(--accent) !important;
+    }
+    div[data-testid="stSelectbox"] input,
+    div[data-testid="stSelectbox"] [role="combobox"] {
+        color: var(--text) !important;
+    }
+    div[role="listbox"] {
+        background: var(--bg-surface) !important;
+        border: 1px solid var(--border) !important;
+    }
+    div[role="option"]:hover {
+        background: var(--bg-hover) !important;
+    }
+    div[role="option"][aria-selected="true"] {
+        background: rgba(141,90,151,.3) !important;
+    }
     /* Group by + stats row spacing */
     .stSelectbox {
         margin-bottom: 8px !important;
