@@ -1,3 +1,7 @@
+<p align="center">
+  <strong>🇧🇷 Português</strong> &nbsp;|&nbsp; <a href="README.en.md">🇺🇸 English</a>
+</p>
+
 # PeakVault
 
 <p>
