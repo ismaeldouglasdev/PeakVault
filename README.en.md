@@ -53,7 +53,7 @@ PeakVault is a personal productivity tool for managing flat JSON lists. It provi
 3. In the interface, load a JSON list via the "Carregar lista" button
 4. Use the buttons on the left for CRUD, grouping, or chart visualization
 
-> Compatible with Windows 10 and 11.
+> Compatible with Windows 10, 11, and Linux.
 
 ## Project Structure
 

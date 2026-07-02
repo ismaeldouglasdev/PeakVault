@@ -53,7 +53,7 @@ PeakVault é uma ferramenta de produtividade pessoal para gerenciamento genéric
 3. Na interface, carregue uma lista JSON via botão "Carregar lista"
 4. Utilize os botões à esquerda para CRUD, agrupar ou visualizar gráficos
 
-> Compatível com Windows 10 e 11.
+> Compatível com Windows 10, 11 e Linux.
 
 ## Estrutura do Projeto
 
