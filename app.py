@@ -16,8 +16,56 @@ import logica
 st.set_page_config(page_title="PeakVault", page_icon="🗂️", layout="wide")
 CORES = {"completo":"#4caf50","assistindo":"#8d5a97","planejado":"#ffa726","dropado":"#ef5350"}
 PROJECT_DIR = Path(__file__).parent
+DATA_DIR = PROJECT_DIR / "user_data"
+DATA_DIR.mkdir(exist_ok=True)
+
+# ── AUTH ──
+WEB_PASSWORD = os.environ.get("PEAKVAULT_PASSWORD", "peakvault2026")
+
+def check_auth():
+    if "authenticated" not in st.session_state:
+        st.session_state.authenticated = False
+    if not st.session_state.authenticated:
+        st.markdown("""
+        <div style='text-align:center;padding:80px 20px;'>
+            <div style='font-size:48px;margin-bottom:12px;'>🔒</div>
+            <h2 style='color:#ffedac;margin:0 0 20px;'>PeakVault</h2>
+            <p style='color:#a4a5ae;'>Digite a senha para acessar</p>
+        </div>
+        """, unsafe_allow_html=True)
+        pwd = st.text_input("Senha:", type="password", key="auth_pwd")
+        if st.button("Entrar", type="primary"):
+            if pwd == WEB_PASSWORD:
+                st.session_state.authenticated = True
+                st.rerun()
+            else:
+                st.error("Senha incorreta")
+        st.stop()
+
+check_auth()
 
 # ── SESSION STATE ──
+def save_to_disk(name, df):
+    path = DATA_DIR / name
+    df.to_json(path, orient="records", indent=2, force_ascii=False)
+    return path
+
+def load_from_disk(name):
+    path = DATA_DIR / name
+    if path.exists():
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return pd.DataFrame(data) if isinstance(data, list) else pd.DataFrame([data])
+    return None
+
+def list_saved_files():
+    return sorted([f.name for f in DATA_DIR.glob("*.json")])
+
+def delete_from_disk(name):
+    path = DATA_DIR / name
+    if path.exists():
+        path.unlink()
+
 def init_session():
     for k,v in {"df":None,"df_name":None,"df_hash":None,"undo_stack":[],"undo_pos":-1,"gif_idx":0,
                 "search":"","group_field":None,"show_chart":False,"upload_key":0}.items():
@@ -385,8 +433,33 @@ with st.sidebar:
                 st.session_state.df_hash = uploaded_hash
                 st.session_state.group_field = None
                 st.session_state.show_chart = False
+                save_to_disk(uploaded.name, df)
         except Exception as e:
             st.error(f"Erro: {e}")
+
+    saved_files = list_saved_files()
+    if saved_files:
+        with st.expander(f"📁 Arquivos salvos ({len(saved_files)})", expanded=False):
+            for fname in saved_files:
+                c1, c2 = st.columns([3, 1])
+                with c1:
+                    if st.button(f"📄 {fname}", key=f"load_{fname}", width="stretch"):
+                        loaded = load_from_disk(fname)
+                        if loaded is not None:
+                            push_undo()
+                            st.session_state.df = loaded
+                            st.session_state.df_name = fname
+                            st.session_state.df_hash = hash(loaded.to_json().encode())
+                            st.session_state.group_field = None
+                            st.session_state.show_chart = False
+                            st.rerun()
+                with c2:
+                    if st.button("🗑️", key=f"del_{fname}"):
+                        delete_from_disk(fname)
+                        if st.session_state.df_name == fname:
+                            for k in ["df","df_name","df_hash","undo_stack","undo_pos","group_field","show_chart"]:
+                                st.session_state[k] = None if k in ("df","df_name","df_hash") else ([] if k=="undo_stack" else (False if k=="show_chart" else -1))
+                        st.rerun()
 
     has_data = st.session_state.df is not None and not st.session_state.df.empty
 
@@ -643,6 +716,8 @@ if df_filtered is not None and not df_filtered.empty:
     if edited is not None and not edited.equals(display_df):
         push_undo()
         st.session_state.df = edited
+        if st.session_state.df_name:
+            save_to_disk(st.session_state.df_name, edited)
 
     if st.session_state.search.strip():
         st.caption(f"{len(df_filtered)} resultado(s) para \"{st.session_state.search}\"")
