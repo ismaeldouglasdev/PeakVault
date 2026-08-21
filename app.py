@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -10,7 +11,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 sys.path.insert(0, os.path.dirname(__file__))
-import logica
 
 # ── CONFIG ──
 st.set_page_config(page_title="PeakVault", page_icon="🗂️", layout="wide")
@@ -20,9 +20,21 @@ DATA_DIR = PROJECT_DIR / "user_data"
 DATA_DIR.mkdir(exist_ok=True)
 
 # ── AUTH ──
-WEB_PASSWORD = os.environ.get("PEAKVAULT_PASSWORD", "peakvault2026")
+# Fail-closed: sem PEAKVAULT_PASSWORD configurada, o acesso é negado
+# (a senha default hardcoded vazava num repo público).
+WEB_PASSWORD = os.environ.get("PEAKVAULT_PASSWORD")
 
 def check_auth():
+    if not WEB_PASSWORD:
+        st.markdown("""
+        <div style='text-align:center;padding:80px 20px;'>
+            <div style='font-size:48px;margin-bottom:12px;'>🔒</div>
+            <h2 style='color:#ffedac;margin:0 0 20px;'>PeakVault</h2>
+            <p style='color:#ef5350;'>Servidor sem senha configurada.<br>
+            Defina a variável de ambiente <code>PEAKVAULT_PASSWORD</code> para acessar.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        st.stop()
     if "authenticated" not in st.session_state:
         st.session_state.authenticated = False
     if not st.session_state.authenticated:
@@ -35,7 +47,8 @@ def check_auth():
         """, unsafe_allow_html=True)
         pwd = st.text_input("Senha:", type="password", key="auth_pwd")
         if st.button("Entrar", type="primary"):
-            if pwd == WEB_PASSWORD:
+            import hmac
+            if hmac.compare_digest(pwd.encode(), WEB_PASSWORD.encode()):
                 st.session_state.authenticated = True
                 st.rerun()
             else:
@@ -45,13 +58,22 @@ def check_auth():
 check_auth()
 
 # ── SESSION STATE ──
+def _safe_name(name):
+    base = os.path.basename(name or "").strip()
+    base = re.sub(r"[^\w\-. ()\[\]]", "_", base)
+    if not base:
+        base = "dados.json"
+    if not base.lower().endswith(".json"):
+        base += ".json"
+    return base
+
 def save_to_disk(name, df):
-    path = DATA_DIR / name
+    path = DATA_DIR / _safe_name(name)
     df.to_json(path, orient="records", indent=2, force_ascii=False)
-    return path
+    return path.name
 
 def load_from_disk(name):
-    path = DATA_DIR / name
+    path = DATA_DIR / _safe_name(name)
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -62,7 +84,7 @@ def list_saved_files():
     return sorted([f.name for f in DATA_DIR.glob("*.json")])
 
 def delete_from_disk(name):
-    path = DATA_DIR / name
+    path = DATA_DIR / _safe_name(name)
     if path.exists():
         path.unlink()
 
@@ -454,12 +476,22 @@ with st.sidebar:
                             st.session_state.show_chart = False
                             st.rerun()
                 with c2:
-                    if st.button("🗑️", key=f"del_{fname}"):
-                        delete_from_disk(fname)
-                        if st.session_state.df_name == fname:
-                            for k in ["df","df_name","df_hash","undo_stack","undo_pos","group_field","show_chart"]:
-                                st.session_state[k] = None if k in ("df","df_name","df_hash") else ([] if k=="undo_stack" else (False if k=="show_chart" else -1))
-                        st.rerun()
+                    ck = f"confirm_del_{fname}"
+                    confirmando = bool(st.session_state.get(ck))
+                    label = "⚠️ Confirmar" if confirmando else "🗑️"
+                    if st.button(label, key=f"del_{fname}",
+                            type="primary" if confirmando else "secondary",
+                            width="stretch"):
+                        if confirmando:
+                            delete_from_disk(fname)
+                            st.session_state[ck] = False
+                            if st.session_state.df_name == fname:
+                                for k in ["df","df_name","df_hash","undo_stack","undo_pos","group_field","show_chart"]:
+                                    st.session_state[k] = None if k in ("df","df_name","df_hash") else ([] if k=="undo_stack" else (False if k=="show_chart" else -1))
+                            st.rerun()
+                        else:
+                            st.session_state[ck] = True
+                            st.rerun()
 
     has_data = st.session_state.df is not None and not st.session_state.df.empty
 
@@ -653,25 +685,9 @@ if not has_data:
         </div>
 """, unsafe_allow_html=True)
 
-# Forcar cores do Glide Data Grid via componente HTML (script permitido)
-st.components.v1.html("""
-<script>
-const s = document.createElement('style');
-s.textContent = `
-  :root {
-    --gdg-accent-color: #8d5a97 !important;
-    --gdg-accent-fg: #1f1210 !important;
-    --gdg-bg-color: #1a0e0c !important;
-    --gdg-header-bg-color: #1f1210 !important;
-    --gdg-text-dark: #ffedac !important;
-    --gdg-text-light: #a4a5ae !important;
-    --gdg-border-color: rgba(106,80,94,.25) !important;
-    --gdg-selection-color: rgba(141,90,151,.3) !important;
-  }
-`;
-document.head.appendChild(s);
-</script>
-""", height=0, width=0)
+# Nota: o data editor (glide-data-grid) recebe tema via props internas do
+# Streamlit — CSS vars (--gdg-*) e config.toml NÃO alteram a cor do header.
+# Cor atual do header é um dark slate (#1a1c24), legível sobre o bg escuro.
 
 df_current = st.session_state.df
 stats = obter_stats(df_current)
@@ -704,23 +720,29 @@ with cc:
 
 # ── DATA EDITOR ──
 if df_filtered is not None and not df_filtered.empty:
+    buscando = bool(st.session_state.search.strip())
     display_df = df_filtered.copy().reset_index(drop=True)
-    if st.session_state.group_field and st.session_state.group_field in display_df.columns:
-        display_df[st.session_state.group_field] = display_df[st.session_state.group_field].astype(str)
-        display_df = display_df.sort_values(by=st.session_state.group_field, na_position="last").reset_index(drop=True)
+    grp = st.session_state.group_field
+    if grp and grp in display_df.columns:
+        ordem = display_df[grp].astype(str).sort_values(na_position="last").index
+        display_df = display_df.loc[ordem].reset_index(drop=True)
 
-    edited = st.data_editor(display_df, width="stretch", num_rows="dynamic",
-        key="data_editor",
-        column_config={c: st.column_config.TextColumn(c, width="medium") for c in display_df.columns})
+    if buscando:
+        # Edição desabilitada durante busca: o editor só contém as linhas
+        # filtradas, e substituí-las no df apagaria as linhas fora do filtro.
+        st.dataframe(display_df, width="stretch",
+            column_config={c: st.column_config.TextColumn(c, width="medium") for c in display_df.columns})
+        st.caption(f"🔒 {len(df_filtered)} resultado(s) para \"{st.session_state.search}\" — limpe a busca para editar.")
+    else:
+        edited = st.data_editor(display_df, width="stretch", num_rows="dynamic",
+            key="data_editor",
+            column_config={c: st.column_config.TextColumn(c, width="medium") for c in display_df.columns})
 
-    if edited is not None and not edited.equals(display_df):
-        push_undo()
-        st.session_state.df = edited
-        if st.session_state.df_name:
-            save_to_disk(st.session_state.df_name, edited)
-
-    if st.session_state.search.strip():
-        st.caption(f"{len(df_filtered)} resultado(s) para \"{st.session_state.search}\"")
+        if edited is not None and not edited.equals(display_df):
+            push_undo()
+            st.session_state.df = edited.reset_index(drop=True)
+            if st.session_state.df_name:
+                save_to_disk(st.session_state.df_name, st.session_state.df)
 else:
     st.markdown("<div style='text-align:center;padding:40px;color:var(--text-muted);'>📭 Nenhum item encontrado.</div>", unsafe_allow_html=True)
 
