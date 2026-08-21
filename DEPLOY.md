@@ -8,7 +8,19 @@ JSON dentro de `user_data/`. Dois caminhos de deploy suportados: **Docker**
 
 | Variável | Obrigatória | Descrição |
 |---|---|---|
-| `PEAKVAULT_PASSWORD` | ✅ sim | Senha de acesso. **Sem ela o app nega login** (fail-closed). Nunca usar senha default no código. |
+| `PEAKVAULT_PASSWORD` | só no modo privado | Senha de acesso. **Sem ela o app nega login** (fail-closed). Nunca usar senha default no código. |
+| `PEAKVAULT_DEMO` | só no modo demo | `1` = acesso público **sem senha**, sample carregado automaticamente, tudo somente leitura (sem upload persistente, sem excluir, sem editar). Ideal para portfólio. |
+
+## Cenários
+
+### A) Deploy público de portfólio (demo read-only)
+Runtime Docker, variáveis: apenas `PEAKVAULT_DEMO=1`. Sem disco persistente
+necessário (nada é gravado). Qualquer visitante vê o sample e pode buscar,
+agrupar e gerar gráficos — sem alterar nada.
+
+### B) Deploy privado (uso pessoal)
+Runtime Docker + `PEAKVAULT_PASSWORD=<senha forte>` + disco persistente em
+`/app/user_data` (1 GB). Uploads e edições persistem entre redeploys.
 
 ## Opção 1 — Docker (Render Blueprint / Web Service Docker)
 

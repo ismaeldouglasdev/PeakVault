@@ -55,7 +55,12 @@ def check_auth():
                 st.error("Senha incorreta")
         st.stop()
 
-check_auth()
+# ── DEMO (portfólio) ──
+# PEAKVAULT_DEMO=1: acesso público sem senha, dados de exemplo, somente leitura.
+DEMO_MODE = os.environ.get("PEAKVAULT_DEMO", "").lower() in ("1", "true", "yes")
+
+if not DEMO_MODE:
+    check_auth()
 
 # ── SESSION STATE ──
 def _safe_name(name):
@@ -93,6 +98,19 @@ def init_session():
                 "search":"","group_field":None,"show_chart":False,"upload_key":0}.items():
         if k not in st.session_state: st.session_state[k]=v
 init_session()
+
+if DEMO_MODE:
+    if st.session_state.df is None or st.session_state.df.empty:
+        try:
+            with open(PROJECT_DIR / "lista_c_eps_ranking_animes.json", encoding="utf-8") as f:
+                _sample = json.load(f)
+            _df = pd.DataFrame(_sample) if isinstance(_sample, list) else pd.DataFrame([_sample])
+            if not _df.empty:
+                st.session_state.df = _df
+                st.session_state.df_name = "sample_animes.json"
+        except Exception as e:
+            print(f"demo: falha ao carregar sample: {e}")
+    st.info("🔍 **Modo demonstração** — dados de exemplo, somente leitura. O código completo está no [GitHub](https://github.com/ismaeldouglasdev/PeakVault).")
 
 # ── HELPERS ──
 def push_undo():
@@ -455,11 +473,12 @@ with st.sidebar:
                 st.session_state.df_hash = uploaded_hash
                 st.session_state.group_field = None
                 st.session_state.show_chart = False
-                save_to_disk(uploaded.name, df)
+                if not DEMO_MODE:
+                    save_to_disk(uploaded.name, df)
         except Exception as e:
             st.error(f"Erro: {e}")
 
-    saved_files = list_saved_files()
+    saved_files = [] if DEMO_MODE else list_saved_files()
     if saved_files:
         with st.expander(f"📁 Arquivos salvos ({len(saved_files)})", expanded=False):
             for fname in saved_files:
@@ -556,18 +575,19 @@ with st.sidebar:
                 else:
                     st.caption("Nenhuma coluna 'tags'." if df is not None and "tags" not in df.columns else "Vazio.")
         with c2:
-            with st.popover("❌ Excluir", width="stretch"):
-                df = st.session_state.df
-                if df is not None and not df.empty:
-                    nc = "nome" if "nome" in df.columns else df.columns[0]
-                    names = df[nc].astype(str).tolist()
-                    sel = st.selectbox("Selecione:", names, key="del_sel")
-                    if st.button("Excluir", type="primary"):
-                        push_undo()
-                        st.session_state.df = df.drop(index=df.index[names.index(sel)]).reset_index(drop=True)
-                        st.rerun()
-                else:
-                    st.write("Nada para excluir.")
+            if not DEMO_MODE:
+                with st.popover("❌ Excluir", width="stretch"):
+                    df = st.session_state.df
+                    if df is not None and not df.empty:
+                        nc = "nome" if "nome" in df.columns else df.columns[0]
+                        names = df[nc].astype(str).tolist()
+                        sel = st.selectbox("Selecione:", names, key="del_sel")
+                        if st.button("Excluir", type="primary"):
+                            push_undo()
+                            st.session_state.df = df.drop(index=df.index[names.index(sel)]).reset_index(drop=True)
+                            st.rerun()
+                    else:
+                        st.write("Nada para excluir.")
             if st.button("📥 CSV", key="btn_csv"):
                 csv = st.session_state.df.to_csv(index=False, encoding="utf-8-sig")
                 st.download_button("📥 Download", csv,
@@ -578,33 +598,35 @@ with st.sidebar:
             st.markdown("##### Status rápido")
             c1,c2 = st.columns(2)
             with c1:
-                with st.popover("💔 Dropado", width="stretch"):
-                    nome_drop = st.text_input("Nome:", key="drop_nome")
-                    if st.button("Marcar como Dropado"):
-                        push_undo()
-                        nc = "nome" if "nome" in st.session_state.df.columns else st.session_state.df.columns[0]
-                        nr = {c:"" for c in st.session_state.df.columns}
-                        nr[nc] = nome_drop
-                        if "nota" in nr: nr["nota"] = "--"
-                        if "status" in nr: nr["status"] = "dropado"
-                        st.session_state.df = pd.concat(
-                            [st.session_state.df, pd.DataFrame([nr])], ignore_index=True)
-                        st.rerun()
+                if not DEMO_MODE:
+                    with st.popover("💔 Dropado", width="stretch"):
+                        nome_drop = st.text_input("Nome:", key="drop_nome")
+                        if st.button("Marcar como Dropado"):
+                            push_undo()
+                            nc = "nome" if "nome" in st.session_state.df.columns else st.session_state.df.columns[0]
+                            nr = {c:"" for c in st.session_state.df.columns}
+                            nr[nc] = nome_drop
+                            if "nota" in nr: nr["nota"] = "--"
+                            if "status" in nr: nr["status"] = "dropado"
+                            st.session_state.df = pd.concat(
+                                [st.session_state.df, pd.DataFrame([nr])], ignore_index=True)
+                            st.rerun()
                 if st.button("↩️ Desfazer", key="btn_undo"):
                     if undo(): st.rerun()
             with c2:
-                with st.popover("⏳ Planejar", width="stretch"):
-                    nome_plan = st.text_input("Nome:", key="plan_nome")
-                    if st.button("Adicionar aos Planejados"):
-                        push_undo()
-                        nc = "nome" if "nome" in st.session_state.df.columns else st.session_state.df.columns[0]
-                        nr = {c:"" for c in st.session_state.df.columns}
-                        nr[nc] = nome_plan
-                        if "nota" in nr: nr["nota"] = "--"
-                        if "status" in nr: nr["status"] = "planejado"
-                        st.session_state.df = pd.concat(
-                            [st.session_state.df, pd.DataFrame([nr])], ignore_index=True)
-                        st.rerun()
+                if not DEMO_MODE:
+                    with st.popover("⏳ Planejar", width="stretch"):
+                        nome_plan = st.text_input("Nome:", key="plan_nome")
+                        if st.button("Adicionar aos Planejados"):
+                            push_undo()
+                            nc = "nome" if "nome" in st.session_state.df.columns else st.session_state.df.columns[0]
+                            nr = {c:"" for c in st.session_state.df.columns}
+                            nr[nc] = nome_plan
+                            if "nota" in nr: nr["nota"] = "--"
+                            if "status" in nr: nr["status"] = "planejado"
+                            st.session_state.df = pd.concat(
+                                [st.session_state.df, pd.DataFrame([nr])], ignore_index=True)
+                            st.rerun()
                 if st.button("↪️ Refazer", key="btn_redo"):
                     if redo(): st.rerun()
         else:
@@ -727,12 +749,15 @@ if df_filtered is not None and not df_filtered.empty:
         ordem = display_df[grp].astype(str).sort_values(na_position="last").index
         display_df = display_df.loc[ordem].reset_index(drop=True)
 
-    if buscando:
-        # Edição desabilitada durante busca: o editor só contém as linhas
-        # filtradas, e substituí-las no df apagaria as linhas fora do filtro.
+    if buscando or DEMO_MODE:
+        # Somente leitura: busca ativa filtraria o editor (apagando linhas fora
+        # do filtro no autosave) e o demo é público/imutável por definição.
         st.dataframe(display_df, width="stretch",
             column_config={c: st.column_config.TextColumn(c, width="medium") for c in display_df.columns})
-        st.caption(f"🔒 {len(df_filtered)} resultado(s) para \"{st.session_state.search}\" — limpe a busca para editar.")
+        if buscando:
+            st.caption(f"🔒 {len(df_filtered)} resultado(s) para \"{st.session_state.search}\" — limpe a busca para editar.")
+        else:
+            st.caption("🔒 Modo demonstração — somente leitura.")
     else:
         edited = st.data_editor(display_df, width="stretch", num_rows="dynamic",
             key="data_editor",
