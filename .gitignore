@@ -1,3 +1,4 @@
 gifs/
 *.exe
 __pycache__/
+user_data/
