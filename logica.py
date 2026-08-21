@@ -92,6 +92,22 @@ def carregar_dataframe():
         return pd.DataFrame()
 
 
+def _limpar_nan(registros):
+    """Converte NaN/None-por-pandas em None real, para JSON válido."""
+    limpos = []
+    for r in registros:
+        linha = {}
+        for k, v in r.items():
+            if v is None or (isinstance(v, float) and pd.isna(v)):
+                linha[k] = None
+            elif isinstance(v, float) and v.is_integer() and not isinstance(v, bool):
+                linha[k] = int(v)
+            else:
+                linha[k] = v
+        limpos.append(linha)
+    return limpos
+
+
 def salvar_lista(items):
     # Salva lista no JSON (a partir de lista de dicts).
     df = pd.DataFrame(items)
@@ -101,8 +117,10 @@ def salvar_lista(items):
         if col in df.columns:
             df[col] = df[col].astype(str)
 
+    registros = _limpar_nan(df.to_dict(orient="records"))
+
     with open(ranking, "w", encoding="utf-8") as f:
-        json.dump(df.to_dict(orient="records"), f, indent=2, ensure_ascii=False)
+        json.dump(registros, f, indent=2, ensure_ascii=False, allow_nan=False)
 
 
 def listar_items():
