@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 
 sys.path.insert(0, os.path.dirname(__file__))
 
+from app.plans import MAX_UPLOAD_BYTES
+
 # ── CONFIG ──
 st.set_page_config(page_title="PeakVault", page_icon="🗂️", layout="wide")
 CORES = {"completo":"#4caf50","assistindo":"#8d5a97","planejado":"#ffa726","dropado":"#ef5350"}
@@ -64,13 +66,8 @@ if not DEMO_MODE:
 
 # ── SESSION STATE ──
 def _safe_name(name):
-    base = os.path.basename(name or "").strip()
-    base = re.sub(r"[^\w\-. ()\[\]]", "_", base)
-    if not base:
-        base = "dados.json"
-    if not base.lower().endswith(".json"):
-        base += ".json"
-    return base
+    from app.storage import sanitize_name
+    return sanitize_name(name)
 
 def save_to_disk(name, df):
     path = DATA_DIR / _safe_name(name)
@@ -460,6 +457,9 @@ with st.sidebar:
     uploaded = st.file_uploader("Carregar JSON", type=["json"], label_visibility="collapsed",
         key=f"upload_{st.session_state.upload_key}")
 
+    if uploaded is not None and uploaded.size and uploaded.size > MAX_UPLOAD_BYTES:
+        st.error(f"Arquivo acima do limite de {MAX_UPLOAD_BYTES // (1024 * 1024)} MiB")
+        uploaded = None
     uploaded_hash = hash(uploaded.read()) if uploaded else None
     if uploaded and uploaded_hash != st.session_state.df_hash:
         try:

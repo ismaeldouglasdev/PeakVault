@@ -2,3 +2,7 @@ gifs/
 *.exe
 __pycache__/
 user_data/
+.env
+*.db
+*.sqlite3
+data/*.db
